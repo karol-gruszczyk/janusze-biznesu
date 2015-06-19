@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% Share %}</h1>
+    <ul>
+    {% for share in object_list %}
+        <li>{{ share.name }}</li>
+    {% empty %}
+        <li>No shares yet.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

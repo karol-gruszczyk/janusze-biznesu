@@ -1,5 +1,9 @@
-from django.shortcuts import render_to_response
+from django.views.generic.list import ListView
+from braces.views import LoginRequiredMixin
+from .models import Share
 
 
-def root(request):
-    return render_to_response('shares/share_list.html', {})
+class ShareListView(LoginRequiredMixin, ListView):
+
+    model = Share
+    template_name = 'shares/share_list.html'

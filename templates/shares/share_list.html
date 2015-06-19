@@ -1,5 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'navbar.html' %}
 
 {% block content %}
-some content
+
+<div class="container table-responsive">
+    <h2>Shares</h2>
+    {% if object_list %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Groups</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for share in object_list %}
+            <tr>
+                <td>{{ share.name }}</td>
+                <td>duuupa</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <ul><li>No Shares yet. Fucker.</li></ul>
+    {% endif %}
+</div>
+
 {% endblock %}

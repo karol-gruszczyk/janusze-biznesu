@@ -8,10 +8,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        {% block scripts %}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/slate/bootstrap.min.css">
 
         <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        {% endblock scripts %}
+        {% block extra_scripts %}
+        {% endblock extra_scripts %}
 
         <link rel="shortcut icon" href="{% static 'favicon.png' %}">
     </head>

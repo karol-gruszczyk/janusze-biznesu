@@ -5,13 +5,23 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">Janusze Biznesu</a>
+      <a class="navbar-brand" href="/">
+          <span class="glyphicon glyphicon-usd"></span>
+          Janusze Biznesu
+          <span class="glyphicon glyphicon-usd"></span>
+      </a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Shares <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shares<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'shares:share-list' %}">All shares</a></li>
+            <li><a href="{% url 'shares:group-list' %}">Groups</a></li>
+          </ul>
+        </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">LOWL<span class="caret"></span></a>
           <ul class="dropdown-menu">

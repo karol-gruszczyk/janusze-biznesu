@@ -5,6 +5,9 @@ class Share(models.Model):
     name = models.CharField(max_length=32)
     updated_daily = models.BooleanField(null=False)
 
+    def __str__(self):
+        return self.name
+
 
 class ShareRecord(models.Model):
     share = models.ForeignKey(Share)
@@ -17,4 +20,8 @@ class ShareRecord(models.Model):
 
 
 class ShareGroup(models.Model):
-    relation = models.ManyToManyField(Share)
+    name = models.CharField(max_length=32)
+    shares = models.ManyToManyField(Share, blank=True)
+
+    def __str__(self):
+        return self.name

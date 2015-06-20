@@ -1,0 +1,34 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<div class="container table-responsive">
+    <h2>Share groups</h2>
+    <a href="{% url 'shares:group-create' %}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create group</a>
+    {% if object_list %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Shares</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for group in object_list %}
+            <tr>
+                <td>{{ group.name }}</td>
+                <td>duuupa</td>
+                <td><a href="{% url 'shares:group-update' group.pk %}" class="btn btn-block btn-info">Edit</a></td>
+                <td><a href="{% url 'shares:group-delete' group.pk %}" class="btn btn-block btn-danger">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <ul><li>No Groups yet.</li></ul>
+    {% endif %}
+</div>
+
+{% endblock %}

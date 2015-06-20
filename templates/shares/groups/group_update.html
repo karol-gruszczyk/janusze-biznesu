@@ -1,0 +1,19 @@
+{% extends 'navbar.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="container">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <h1 class="text-center login-title">Update share group</h1>
+        <form class="form-horizontal well" method="post" action="">
+            {% csrf_token %}
+            {% render_field form.name placeholder="Group name" class+="form-control" %}
+            {{ form.name.errors }}
+            {% render_field form.shares class+="form-control" %}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

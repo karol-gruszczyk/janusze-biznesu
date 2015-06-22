@@ -1,44 +1,41 @@
 {% extends 'navbar.html' %}
 
+{% block headertext %}General statistics{% endblock headertext %}
 {% block content %}
-    <div class="container">
-        <h2>General statistics</h2>
-        <hr>
-        <div class="row">
-            <div class="col-md-2 span4"><strong class="pull-right">Operating system</strong></div>
-            <div class="col-md-4">{{ os }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">Architecture</strong></div>
-            <div class="col-md-4">{{ architecture }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">Hostname</strong></div>
-            <div class="col-md-4">{{ hostname }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">CPU</strong></div>
-            <div class="col-md-4">{{ cpu }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">Boot time</strong></div>
-            <div class="col-md-4">{{ boot_time }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">Up time</strong></div>
-            <div class="col-md-4">{{ up_time }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">Python version</strong></div>
-            <div class="col-md-4">{{ python_version }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">RAM</strong></div>
-            <div class="col-md-4">{{ total_ram_mem }}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-2"><strong class="pull-right">Disk memory</strong></div>
-            <div class="col-md-4">{{ total_disk_mem }}</div>
-        </div>
+    <div class="row">
+        <div class="col-md-2 span4"><strong class="pull-right">Operating system</strong></div>
+        <div class="col-md-4">{{ os }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">Architecture</strong></div>
+        <div class="col-md-4">{{ architecture }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">Hostname</strong></div>
+        <div class="col-md-4">{{ hostname }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">CPU</strong></div>
+        <div class="col-md-4">{{ cpu }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">Boot time</strong></div>
+        <div class="col-md-4">{{ boot_time }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">Up time</strong></div>
+        <div class="col-md-4">{{ up_time }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">Python version</strong></div>
+        <div class="col-md-4">{{ python_version }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">RAM</strong></div>
+        <div class="col-md-4">{{ total_ram_mem }}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><strong class="pull-right">Disk memory</strong></div>
+        <div class="col-md-4">{{ total_disk_mem }}</div>
     </div>
 {% endblock content %}

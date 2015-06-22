@@ -1,9 +1,7 @@
 {% extends 'navbar.html' %}
 
+{% block headertext %}Share groups{% endblock headertext %}
 {% block content %}
-
-<div class="container table-responsive">
-    <h2>Share groups</h2>
     <a href="{% url 'shares:group-create' %}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create group</a>
     {% if object_list %}
     <table class="table table-bordered">
@@ -29,6 +27,4 @@
     {% else %}
         <ul><li>No Groups yet.</li></ul>
     {% endif %}
-</div>
-
 {% endblock %}

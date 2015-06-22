@@ -2,40 +2,44 @@
 
 {% block headertext %}General statistics{% endblock headertext %}
 {% block content %}
-    <div class="row">
-        <div class="col-md-2 span4"><strong class="pull-right">Operating system</strong></div>
-        <div class="col-md-4">{{ os }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">Architecture</strong></div>
-        <div class="col-md-4">{{ architecture }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">Hostname</strong></div>
-        <div class="col-md-4">{{ hostname }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">CPU</strong></div>
-        <div class="col-md-4">{{ cpu }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">Boot time</strong></div>
-        <div class="col-md-4">{{ boot_time }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">Up time</strong></div>
-        <div class="col-md-4">{{ up_time }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">Python version</strong></div>
-        <div class="col-md-4">{{ python_version }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">RAM</strong></div>
-        <div class="col-md-4">{{ total_ram_mem }}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-2"><strong class="pull-right">Disk memory</strong></div>
-        <div class="col-md-4">{{ total_disk_mem }}</div>
-    </div>
+    <dl class="dl-horizontal">
+        <dt>Operating system</dt>
+        <dd>{{ os }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Architecture</dt>
+        <dd>{{ architecture }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Hostname</dt>
+        <dd>{{ hostname }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>CPU</dt>
+        <dd>{{ cpu }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Boot time</dt>
+        <dd>{{ boot_time }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Up time</dt>
+        <dd>{{ up_time }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Python version</dt>
+        <dd>{{ python_version }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>RAM</dt>
+        <dd>{{ total_ram_mem }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>SWAP</dt>
+        <dd>{{ total_swap_mem }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Disk memory</dt>
+        <dd>{{ total_disk_mem }}</dd>
+    </dl>
 {% endblock content %}

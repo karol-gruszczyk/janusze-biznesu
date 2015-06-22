@@ -2,5 +2,84 @@
 
 {% block headertext %}CPU Statistics{% endblock headertext %}
 {% block content %}
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{ cpu.name }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Cores</dt>
+        <dd>{{ cpu.count }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Logical cores</dt>
+        <dd>{{ cpu.logical_count }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Load</dt>
+        <dd>{{ cpu.load }}%</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Temperature</dt>
+        <dd>{{ cpu.temperature }}%</dd>
+    </dl>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">CPU load timeline</h3>
+        </div>
+        <div class="panel-body">
+            <div id="chart_load_div" style="height: 500px;"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">CPU temperature timeline</h3>
+        </div>
+        <div class="panel-body">
+            <div id="chart_temp_div" style="height: 500px;"></div>
+        </div>
+    </div>
 
 {% endblock content %}
+
+{% block extra_scripts %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawLoadChart);
+      function drawLoadChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['2013',  'CPU load'],
+          ['2013',  100],
+          ['2014',  90],
+          ['2015',  50],
+          ['2016',  80]
+        ]);
+
+        var options = {
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_load_div'));
+        chart.draw(data, options);
+      }
+      google.setOnLoadCallback(drawTempChart);
+      function drawTempChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['2013',  'CPU temperature'],
+          ['2013',  50],
+          ['2014',  55],
+          ['2015',  52],
+          ['2016',  60]
+        ]);
+
+        var options = {
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_temp_div'));
+        chart.draw(data, options);
+      }
+    </script>
+{% endblock extra_scripts %}

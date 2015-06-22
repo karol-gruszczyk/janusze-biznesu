@@ -2,5 +2,64 @@
 
 {% block headertext %}Network statistics{% endblock headertext %}
 {% block content %}
-
+    <dl class="dl-horizontal">
+        <dt>Hostname</dt>
+        <dd>{{ hostname }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>MAC address</dt>
+        <dd>{{ mac_address }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Local IP address</dt>
+        <dd>{{ ip_address }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Mask</dt>
+        <dd>{{ mask }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Gateway</dt>
+        <dd>{{ gateway }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Bytes sent</dt>
+        <dd>{{ bytes_sent }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Bytes received</dt>
+        <dd>{{ bytes_received }}</dd>
+    </dl>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Network traffic timeline</h3>
+        </div>
+        <div class="panel-body">
+            <div id="chart_div" style="height: 500px;"></div>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block extra_scripts %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['2013',  'Download', 'Upload'],
+          ['2013',  100, 1],
+          ['2014',  90, 50],
+          ['2015',  50, 30],
+          ['2016',  80, 3]
+        ]);
+
+        var options = {
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+{% endblock extra_scripts %}

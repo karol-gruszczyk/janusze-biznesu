@@ -2,5 +2,95 @@
 
 {% block headertext %}Memory statistics{% endblock headertext %}
 {% block content %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">RAM</h3>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                 <div class="text-right">
+                     <span class="label label-info">
+                         {{ ram.used }} / {{ ram.total }}
+                     </span>
+                 </div>
 
+                <div class="progress progress-striped">
+                    <div class="progress-bar
+                            {% if ram.used_percent < 50 %} progress-bar-success
+                            {% elif ram.used_percent < 80 %} progress-bar-warning
+                            {% else %} progress-bar-danger
+                            {% endif %}
+                            "
+                            style="width: {{ ram.used_percent }}%">
+                        {{ ram.used_percent }}%
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        <strong>SWAP</strong>
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">{{ swap.used }} / {{ swap.total }}</span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div class="progress-bar
+                            {% if swap.used_percent < 50 %} progress-bar-success
+                            {% elif swap.used_percent < 80 %} progress-bar-warning
+                            {% else %} progress-bar-danger
+                            {% endif %}
+                            "
+                            style="width: {{ swap.used_percent }}%">
+                        {{ swap.used_percent }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Disk</h3>
+        </div>
+        <div class="list-group">
+            {% for dev in disks %}
+			<div class="list-group-item">
+                <div>
+                    <div class="col-sm-8">
+                        <strong>{{ dev.device }}</strong>
+                        <span>
+                            {% if dev.mount_point and dev.mount_point != dev.device %}
+                                (mounted as "{{ dev.mount_point }}")
+                            {% endif %}
+                        </span>
+                        <span>
+                            {% if dev.fs_type %}
+                                in the <strong>{{ dev.fs_type }}</strong> file system
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">{{ dev.used }} / {{ dev.total }}</span>
+                    </div>
+                </div>
+                <div>
+
+                </div>
+                <div class="progress progress-striped">
+                    <div class="progress-bar
+                            {% if dev.used_percent < 50 %} progress-bar-success
+                            {% elif dev.used_percent < 80 %} progress-bar-warning
+                            {% else %} progress-bar-danger
+                            {% endif %}
+                            "
+                            style="width: {{ dev.used_percent }}%">
+                        {{ dev.used_percent }}%
+                    </div>
+                </div>
+			</div>
+            {% endfor %}
+		</div>
+    </div>
 {% endblock content %}

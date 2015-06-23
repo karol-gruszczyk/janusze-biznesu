@@ -10,7 +10,7 @@ def general_info(request):
 
 def cpu_info(request):
     data = SystemMonitor().get_cpu_info()
-    return render(request, 'stats/cpu.html', {'cpu': data})
+    return render(request, 'stats/cpu.html', data)
 
 
 def cpu_load(request):

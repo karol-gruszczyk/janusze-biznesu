@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .handlers import SystemMonitor
 
 
@@ -10,6 +11,14 @@ def general_info(request):
 def cpu_info(request):
     data = SystemMonitor().get_cpu_info()
     return render(request, 'stats/cpu.html', {'cpu': data})
+
+
+def cpu_load(request):
+    return JsonResponse({'load_stats': SystemMonitor().cpu_load_stats})
+
+
+def network_traffic(request):
+    return JsonResponse({'traffic_stats': SystemMonitor().network_traffic_stats})
 
 
 def memory_info(request):

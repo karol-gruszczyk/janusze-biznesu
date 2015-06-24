@@ -14,7 +14,7 @@ def cpu_info(request):
 
 
 def cpu_load(request):
-    return JsonResponse({'load_stats': SystemMonitor().cpu_load_stats})
+    return JsonResponse({'load_stats': SystemMonitor().cpu_load_stats, 'temp_stats': SystemMonitor().cpu_temp_stats})
 
 
 def network_traffic(request):

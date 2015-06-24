@@ -30,6 +30,7 @@ def format_bytes(number):
 
 class SystemMonitor(metaclass=Singleton):
     cpu_load_stats = []
+    cpu_temp_stats = []
     network_traffic_stats = []
 
     def __init__(self):
@@ -46,6 +47,7 @@ class SystemMonitor(metaclass=Singleton):
         self.net_bytes_sent = psutil.net_io_counters().bytes_sent
         self.net_bytes_received = psutil.net_io_counters().bytes_recv
         self.stats_timer_interval = 10
+        self.stats_elements = 60
         self.stats_timer = None
         self.global_data = {'stats_interval': self.stats_timer_interval * 1000}
         self.update_stats()
@@ -54,11 +56,23 @@ class SystemMonitor(metaclass=Singleton):
         if self.stats_timer:
             self.stats_timer.stop()
 
+    @classmethod
+    def get_cpu_temp(cls):
+        return 0
+
     def update_stats(self):
         time_now = str(datetime.now().time()).split('.')[0]
+        # cpu load
         self.cpu_load_stats.append([time_now] + psutil.cpu_percent(percpu=True))
         if len(self.cpu_load_stats) > 61:
             del self.cpu_load_stats[1]
+
+        # cpu temperature
+        self.cpu_temp_stats.append([time_now, self.get_cpu_temp()])
+        if len(self.cpu_temp_stats) > self.stats_elements:
+            del self.cpu_temp_stats[1]
+
+        # network traffic
         net_io = psutil.net_io_counters()
         div = (2 << 16) * self.stats_timer_interval
         d_sent = (net_io.bytes_sent - self.net_bytes_sent) / div
@@ -66,7 +80,7 @@ class SystemMonitor(metaclass=Singleton):
         self.net_bytes_sent = net_io.bytes_sent
         self.net_bytes_received = net_io.bytes_recv
         self.network_traffic_stats.append([time_now, d_received, d_sent])
-        if len(self.network_traffic_stats) > 61:
+        if len(self.network_traffic_stats) > self.stats_elements:
             del self.network_traffic_stats[1]
         self.stats_timer = Timer(self.stats_timer_interval, self.update_stats).start()
 
@@ -81,6 +95,7 @@ class SystemMonitor(metaclass=Singleton):
         self.cpu_count = psutil.cpu_count(logical=False)
         self.cpu_logical_count = psutil.cpu_count()
         self.cpu_load_stats = [['time'] + ['Core #' + str(i) for i in range(self.cpu_logical_count)]]
+        self.cpu_temp_stats = [['time', 'CPU temperature']]
 
     def get_general_info(self):
         disk_total = sum([psutil.disk_usage(dev.mountpoint).total for dev in psutil.disk_partitions()])

@@ -29,18 +29,18 @@
         </div>
         <div class="panel-body">
 
-            <div id="chart_load_div" style="height: 500px;"></div>
+            <div id="load_chart_div" style="height: 500px;"></div>
         </div>
     </div>
 
-    <!--<div class="panel panel-primary">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">CPU temperature timeline</h3>
         </div>
         <div class="panel-body">
-            <div id="chart_temp_div" style="height: 500px;"></div>
+            <div id="temp_chart_div" style="height: 500px;"></div>
         </div>
-    </div>-->
+    </div>
 
 {% endblock content %}
 
@@ -51,16 +51,27 @@
       google.setOnLoadCallback(drawLoadChart);
       function drawLoadChart() {
         $.getJSON("{% url 'stats:api-cpu' %}", function(data) {
-          var data = google.visualization.arrayToDataTable(data.load_stats);
-          var options = {
+          var loadData = google.visualization.arrayToDataTable(data.load_stats);
+          var loadOptions = {
             vAxis: {
               minValue: 0,
               maxValue: 100,
               format:'# \'%\''
             }
           };
-          var chart = new google.visualization.AreaChart(document.getElementById('chart_load_div'));
-          chart.draw(data, options);
+          var loadChart = new google.visualization.AreaChart(document.getElementById('load_chart_div'));
+          loadChart.draw(loadData, loadOptions);
+
+          var tempData = google.visualization.arrayToDataTable(data.temp_stats);
+          var tempOptions = {
+            vAxis: {
+              minValue: 0,
+              maxValue: 100,
+              format:'# °C'
+            }
+          };
+          var tempChart = new google.visualization.AreaChart(document.getElementById('temp_chart_div'));
+          tempChart.draw(tempData, tempOptions);
         });
       }
       setInterval(drawLoadChart, {{ stats_interval }});

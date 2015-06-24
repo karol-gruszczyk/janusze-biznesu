@@ -10,7 +10,7 @@ A powerfull tool for predicting the stock exchange.
 
 ### Setup
 ```bash
-git clone 
+git clone git@github.com:karol-gruszczyk/janusze-biznesu.git
 cd janusze-biznesu
 virtualenv -p python3 venv
 source venv/bin/activate

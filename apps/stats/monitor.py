@@ -6,26 +6,7 @@ import uuid
 import re
 from threading import Timer
 from datetime import datetime
-
-
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            print("robie")
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-def format_bytes(number):
-    suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
-    suffix = 0
-    while True:
-        if number < 1024 or suffix >= 4:
-            return str(round(number, 2)) + " " + suffixes[suffix]
-        number /= 1024
-        suffix += 1
+from utils import Singleton
 
 
 class SystemMonitor(metaclass=Singleton):
@@ -107,9 +88,9 @@ class SystemMonitor(metaclass=Singleton):
             'python_version': self.python_version,
             'boot_time': self.boot_time,
             'up_time': str(datetime.now() - self.boot_time).split('.')[0],  # removing microseconds
-            'total_ram_mem': format_bytes(self.ram_total),
-            'total_swap_mem': format_bytes(self.swap_total),
-            'total_disk_mem': format_bytes(disk_total)
+            'total_ram_mem': self.ram_total,
+            'total_swap_mem': self.swap_total,
+            'total_disk_mem': disk_total
         }
         return data
 
@@ -129,8 +110,8 @@ class SystemMonitor(metaclass=Singleton):
             'hostname': self.hostname,
             'mac_address': ':'.join(("%012X" % uuid.getnode())[i:i + 2] for i in range(0, 12, 2)),
             'ip_address': socket.gethostbyname(socket.gethostname()),
-            'bytes_sent': format_bytes(self.net_bytes_sent),
-            'bytes_received': format_bytes(self.net_bytes_received)
+            'bytes_sent': self.net_bytes_sent,
+            'bytes_received': self.net_bytes_received
         }
         data.update(self.global_data)
         return data
@@ -139,8 +120,8 @@ class SystemMonitor(metaclass=Singleton):
     def get_ram_info(cls):
         ram = psutil.virtual_memory()
         data = {
-            'used': format_bytes(ram.total * ram.percent / 100),
-            'total': format_bytes(ram.total),
+            'used': ram.total * ram.percent / 100,
+            'total': ram.total,
             'used_percent': ram.percent,
         }
         return data
@@ -149,8 +130,8 @@ class SystemMonitor(metaclass=Singleton):
     def get_swap_info(cls):
         swap = psutil.swap_memory()
         data = {
-            'used': format_bytes(swap.total * swap.percent / 100),
-            'total': format_bytes(swap.total),
+            'used': swap.total * swap.percent / 100,
+            'total': swap.total,
             'used_percent': swap.percent,
         }
         return data
@@ -164,8 +145,8 @@ class SystemMonitor(metaclass=Singleton):
                 'device': dev.device,
                 'mount_point': dev.mountpoint,
                 'fs_type': dev.fstype,
-                'used': format_bytes(usage.used),
-                'total': format_bytes(usage.total),
+                'used': usage.used,
+                'total': usage.total,
                 'used_percent': usage.percent
             })
         return data

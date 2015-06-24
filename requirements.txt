@@ -2,3 +2,4 @@ django
 django-braces
 django-widget-tweaks
 psutil
+wget

@@ -88,3 +88,9 @@ STATICFILES_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/'
+
+DATABASE_SOURCE_URLS = {
+    'shares': 'http://bossa.pl/pub/ciagle/omega/omegacgl.zip',
+    'currencies': 'http://bossa.pl/pub/waluty/omega/omeganbp.zip',
+    'foreign_shares': 'http://bossa.pl/pub/indzagr/omega/omegazgr.zip'
+}

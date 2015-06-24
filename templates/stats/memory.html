@@ -10,7 +10,7 @@
             <div class="list-group-item">
                  <div class="text-right">
                      <span class="label label-info">
-                         {{ ram.used }} / {{ ram.total }}
+                         {{ ram.used|filesizeformat }} / {{ ram.total|filesizeformat }}
                      </span>
                  </div>
 
@@ -32,7 +32,7 @@
                         <strong>SWAP</strong>
                     </div>
                     <div class="text-right">
-                        <span class="label label-info">{{ swap.used }} / {{ swap.total }}</span>
+                        <span class="label label-info">{{ swap.used|filesizeformat }} / {{ swap.total|filesizeformat }}</span>
                     </div>
                 </div>
                 <div class="progress progress-striped">
@@ -74,7 +74,7 @@
                         </span>
                     </div>
                     <div class="text-right">
-                        <span class="label label-info">{{ dev.used }} / {{ dev.total }}</span>
+                        <span class="label label-info">{{ dev.used|filesizeformat }} / {{ dev.total|filesizeformat }}</span>
                     </div>
                 </div>
                 <div>

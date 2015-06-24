@@ -1,0 +1,95 @@
+{% extends 'navbar.html' %}
+
+{% block headertext %}Updating database...{% endblock headertext %}
+{% block content %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Status</h3>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        Downloading file <strong id="current_file_name_div"></strong> ...
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">
+                            <span id="current_file_done_div"></span>
+                            /
+                            <span id="current_file_total_div"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div id="current_file_bar_div" class="progress-bar progress-bar-success active">
+                        <span id="current_file_percent_div"></span>%
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        Download progress
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">
+                            <span id="download_current_div"></span>
+                            /
+                            <span id="download_total_div"></span> files
+                        </span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div id="download_bar_div" class="progress-bar progress-bar-success active">
+                        <span id="download_percent_div"></span>%
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        Processing progress
+                    </div>
+                    <div class="text-right">
+                        <span>
+                            <span id="processing_current_div"></span>
+                            /
+                            <span id="processing_total_div"></span> files
+                        </span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div id="processing_bar_div" class="progress-bar progress-bar-success active">
+                        <span id="processing_percent_div"></span>%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_scripts %}
+    <script type="text/javascript">
+      $(document).ready(updateProgressBars);
+      function updateProgressBars() {
+        $.getJSON("{% url 'shares:updater-status-api' %}", function(data) {
+          $("#current_file_name_div").text(data.current_file.name);
+          $("#current_file_done_div").text(data.current_file.done);
+          $("#current_file_total_div").text(data.current_file.total);
+          $("#current_file_percent_div").text(data.current_file.percent);
+          $("#current_file_bar_div").width(String(data.current_file.percent) + '%');
+
+          $("#download_current_div").text(data.download_progress.current);
+          $("#download_total_div").text(data.download_progress.total);
+          $("#download_percent_div").text(data.download_progress.percent);
+          $("#download_bar_div").width(String(data.download_progress.percent) + '%');
+
+          $("#processing_current_div").text(data.processing_progress.current);
+          $("#processing_total_div").text(data.processing_progress.total);
+          $("#processing_percent_div").text(data.processing_progress.percent);
+          $("#processing_bar_div").width(String(data.processing_progress.percent) + '%');
+        });
+      }
+      setInterval(updateProgressBars, 1000);
+    </script>
+{% endblock extra_scripts %}

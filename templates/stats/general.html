@@ -32,14 +32,14 @@
     </dl>
     <dl class="dl-horizontal">
         <dt>RAM</dt>
-        <dd>{{ total_ram_mem }}</dd>
+        <dd>{{ total_ram_mem|filesizeformat }}</dd>
     </dl>
     <dl class="dl-horizontal">
         <dt>SWAP</dt>
-        <dd>{{ total_swap_mem }}</dd>
+        <dd>{{ total_swap_mem|filesizeformat }}</dd>
     </dl>
     <dl class="dl-horizontal">
         <dt>Disk memory</dt>
-        <dd>{{ total_disk_mem }}</dd>
+        <dd>{{ total_disk_mem|filesizeformat }}</dd>
     </dl>
 {% endblock content %}

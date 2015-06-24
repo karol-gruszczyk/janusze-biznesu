@@ -1,0 +1,13 @@
+{% extends 'navbar.html' %}
+
+{% block headertext %}Updater status{% endblock headertext %}
+{% block content %}
+    <a href="{% url 'shares:updater-full-import' %}" class="btn btn-success">
+        <span class="glyphicon glyphicon-plus"></span> Import whole database
+    </a>
+    <dl class="dl-horizontal">
+        <dt>Last update</dt>
+        <dd>neva</dd>
+    </dl>
+
+{% endblock content %}

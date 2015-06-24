@@ -8,6 +8,6 @@ urlpatterns = patterns(
     url(r'^cpu/$', cpu_info, name='cpu'),
     url(r'^memory/$', memory_info, name='memory'),
     url(r'^network/$', network_info, name='network'),
-    url(r'^api/cpu/$', cpu_load, name='api-cpu'),
-    url(r'^api/network/$', network_traffic, name='api-network'),
+    url(r'^cpu/api/$', cpu_load, name='api-cpu'),
+    url(r'^network/api/$', network_traffic, name='api-network'),
 )

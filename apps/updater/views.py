@@ -7,7 +7,7 @@ from .updater import Updater
 @login_required
 def updater_status(request):
     Updater()
-    return render(request, 'shares/updater/status.html', {})
+    return render(request, 'updater/status.html', {})
 
 
 @login_required
@@ -19,4 +19,4 @@ def updater_status_api(request):
 @login_required
 def full_import(request):
     Updater().update_whole_database()
-    return render(request, 'shares/updater/update.html', {})
+    return render(request, 'updater/update.html', {})

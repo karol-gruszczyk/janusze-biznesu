@@ -48,13 +48,13 @@
             <div class="list-group-item">
                  <div>
                     <div class="col-sm-8">
-                        Processing progress
+                        <strong>Processing progress. Currently <span id="processing_action_div"></span>...</strong>
                     </div>
                     <div class="text-right">
-                        <span>
+                        <span class="label label-info">
                             <span id="processing_current_div"></span>
                             /
-                            <span id="processing_total_div"></span> files
+                            <span id="processing_total_div"></span>
                         </span>
                     </div>
                 </div>
@@ -72,22 +72,23 @@
     <script type="text/javascript">
       $(document).ready(updateProgressBars);
       function updateProgressBars() {
-        $.getJSON("{% url 'shares:updater-status-api' %}", function(data) {
-          $("#current_file_name_div").text(data.current_file.name);
-          $("#current_file_done_div").text(data.current_file.done);
-          $("#current_file_total_div").text(data.current_file.total);
-          $("#current_file_percent_div").text(data.current_file.percent);
-          $("#current_file_bar_div").width(String(data.current_file.percent) + '%');
+        $.getJSON("{% url 'updater:status-api' %}", function(data) {
+          $("#current_file_name_div").text(data.file.name);
+          $("#current_file_done_div").text(data.file.done);
+          $("#current_file_total_div").text(data.file.total);
+          $("#current_file_percent_div").text(data.file.percent);
+          $("#current_file_bar_div").width(String(data.file.percent) + '%');
 
-          $("#download_current_div").text(data.download_progress.current);
-          $("#download_total_div").text(data.download_progress.total);
-          $("#download_percent_div").text(data.download_progress.percent);
-          $("#download_bar_div").width(String(data.download_progress.percent) + '%');
+          $("#download_current_div").text(data.download.current);
+          $("#download_total_div").text(data.download.total);
+          $("#download_percent_div").text(data.download.percent);
+          $("#download_bar_div").width(String(data.download.percent) + '%');
 
-          $("#processing_current_div").text(data.processing_progress.current);
-          $("#processing_total_div").text(data.processing_progress.total);
-          $("#processing_percent_div").text(data.processing_progress.percent);
-          $("#processing_bar_div").width(String(data.processing_progress.percent) + '%');
+          $("#processing_action_div").text(data.processing.action);
+          $("#processing_current_div").text(data.processing.current);
+          $("#processing_total_div").text(data.processing.total);
+          $("#processing_percent_div").text(data.processing.percent);
+          $("#processing_bar_div").width(String(data.processing.percent) + '%');
         });
       }
       setInterval(updateProgressBars, 1000);

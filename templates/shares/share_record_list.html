@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'navbar.html' %}
 
+{% block headertext %}Share januszpol{% endblock headertext %}
 {% block content %}
-    <h1>{% Share %}</h1>
     <ul>
-    {% for share in object_list %}
-        <li>{{ share.name }}</li>
+    {% for record in object_list %}
+        <li>{{ record.close }}</li>
     {% empty %}
         <li>No shares yet.</li>
     {% endfor %}

@@ -3,10 +3,11 @@ from django.db import models
 
 class Share(models.Model):
     name = models.CharField(max_length=32)
+    visible_name = models.CharField(max_length=64, null=True)
     updated_daily = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.visible_name if self.visible_name else self.name
 
 
 class ShareRecord(models.Model):

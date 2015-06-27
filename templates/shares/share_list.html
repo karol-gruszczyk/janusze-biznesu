@@ -8,13 +8,15 @@
             <tr>
                 <th>Name</th>
                 <th>Groups</th>
+                <th>Update</th>
             </tr>
         </thead>
         <tbody>
         {% for share in object_list %}
             <tr>
-                <td>{{ share.name }}</td>
-                <td>duuupa</td>
+                <td><a href="{% url 'shares:record-list' share.pk %}">{{ share }}</a></td>
+                <td>{{ share.groups }}</td>
+                <td><a href="{% url 'shares:update' share.pk %}" class="btn btn-block btn-info">Edit</a></td>
             </tr>
         {% endfor %}
         </tbody>

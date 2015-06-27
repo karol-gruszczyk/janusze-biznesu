@@ -77,11 +77,15 @@ class Updater(metaclass=Singleton):
         return ShareRecord(share=share, date=date, open=cols[2], high=cols[3],
                            low=cols[4], close=cols[5], volume=cols[6])
 
-    @classmethod
-    def update_share(cls, file_name, db_type):
-        share_name = os.path.splitext(file_name)[0]
-        share = Share.objects.update_or_create(name=share_name)[0]
-        return share
+    def update_share(self, path_name, file_name):
+        with open(os.path.join(path_name, file_name), 'r') as f:
+            f.readline()
+            share_name = os.path.splitext(file_name)[0]
+            share = Share.objects.update_or_create(name=share_name)[0]
+            ShareRecord.objects.bulk_create([self.get_record_from_line(share, line) for line in f.readlines()])
+        self.update_status['processing']['current'] += 1
+        self.update_status['processing']['percent'] = round(self.update_status['processing']['current']
+                                                            / self.update_status['processing']['total'] * 100)
 
     def process_files(self, dirs):
         self.update_status['processing']['action'] = 'parsing files'
@@ -90,13 +94,7 @@ class Updater(metaclass=Singleton):
         ShareRecord.objects.all().delete()
         for db_type, path_name in dirs.items():
             for file_name in os.listdir(path_name):
-                with open(os.path.join(path_name, file_name), 'r') as f:
-                    f.readline()
-                    share = self.update_share(file_name, db_type)
-                    ShareRecord.objects.bulk_create([self.get_record_from_line(share, line) for line in f.readlines()])
-                self.update_status['processing']['current'] += 1
-                self.update_status['processing']['percent'] = round(self.update_status['processing']['current']
-                                                                    / self.update_status['processing']['total'] * 100)
+                self.update_share(path_name, file_name)
 
     def clean_up(self, dl_files, dl_dirs):
         self.update_status['processing']['action'] = 'cleaning up'

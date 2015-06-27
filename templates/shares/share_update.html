@@ -1,0 +1,15 @@
+{% extends 'navbar.html' %}
+{% load widget_tweaks %}
+
+{% block headertext %}Update share{% endblock headertext %}
+{% block content %}
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <form class="form-horizontal well" method="post" action="">
+            {% csrf_token %}
+            {% render_field form.visible_name placeholder="Visible name" class+="form-control" %}
+            {{ form.visible_name.errors }}
+            <p>{% render_field form.updated_daily %}<label for="id_updated_daily">Updated daily?</label></p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update</button>
+        </form>
+    </div>
+{% endblock %}

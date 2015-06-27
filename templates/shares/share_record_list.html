@@ -1,12 +1,34 @@
 {% extends 'navbar.html' %}
 
-{% block headertext %}Share januszpol{% endblock headertext %}
+{% block headertext %}Share {{ share }}{% endblock headertext %}
 {% block content %}
-    <ul>
-    {% for record in object_list %}
-        <li>{{ record.close }}</li>
-    {% empty %}
-        <li>No shares yet.</li>
-    {% endfor %}
-    </ul>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
 {% endblock %}
+
+{% block extra_scripts %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawLoadChart);
+        function drawLoadChart() {
+            var loadData = google.visualization.arrayToDataTable([
+                ["date", "Close"],
+                {% for record in object_list %}
+                [new Date("{{ record.date.isoformat }}"), {{ record.close }}],
+                {% endfor %}
+            ]);
+            var loadOptions = {
+                explorer: {
+                    maxZoomOut: 1.1,
+                    maxZoomIn: 20,
+                    keepInBounds: true
+                },
+                vAxis: {
+                    format:'# PLN'
+                }
+            };
+            var loadChart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            loadChart.draw(loadData, loadOptions);
+      }
+    </script>
+{% endblock extra_scripts %}

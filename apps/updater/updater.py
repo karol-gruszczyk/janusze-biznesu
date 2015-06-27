@@ -73,7 +73,7 @@ class Updater(metaclass=Singleton):
     @classmethod
     def get_record_from_line(cls, share, line):
         cols = line.strip().split(',')  # assuming format is: Name,Date,Open,High,Low,Close,Volume
-        date = datetime.strptime(cols[1], '%Y%M%d')
+        date = datetime.strptime(cols[1], '%Y%m%d')
         return ShareRecord(share=share, date=date, open=cols[2], high=cols[3],
                            low=cols[4], close=cols[5], volume=cols[6])
 

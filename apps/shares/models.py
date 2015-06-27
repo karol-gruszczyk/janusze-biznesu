@@ -5,6 +5,9 @@ class Share(models.Model):
     name = models.CharField(max_length=32)
     visible_name = models.CharField(max_length=64, null=True)
     updated_daily = models.BooleanField(default=False)
+    first_record = models.DateField(null=True)
+    last_record = models.DateField(null=True)
+    records = models.PositiveIntegerField(null=True)
 
     def __str__(self):
         return self.visible_name if self.visible_name else self.name

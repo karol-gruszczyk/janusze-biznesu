@@ -7,6 +7,8 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Records</th>
+                <th>Time span</th>
                 <th>Groups</th>
                 <th>Update</th>
             </tr>
@@ -15,6 +17,8 @@
         {% for share in object_list %}
             <tr>
                 <td><a href="{% url 'shares:record-list' share.pk %}">{{ share }}</a></td>
+                <td>{{ share.records }}</td>
+                <td>{{ share.first_record }} - {{ share.last_record }}</td>
                 <td>{{ share.groups }}</td>
                 <td><a href="{% url 'shares:share-update' share.pk %}" class="btn btn-block btn-info">Edit</a></td>
             </tr>

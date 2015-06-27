@@ -9,6 +9,7 @@ from .models import Share, ShareRecord, ShareGroup
 class ShareListView(LoginRequiredMixin, ListView):
     model = Share
     template_name = 'shares/share_list.html'
+    queryset = Share.objects.all().order_by('-last_record', '-records')
 
 
 class ShareUpdateView(LoginRequiredMixin, UpdateView):

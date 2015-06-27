@@ -82,7 +82,12 @@ class Updater(metaclass=Singleton):
             f.readline()
             share_name = os.path.splitext(file_name)[0]
             share = Share.objects.update_or_create(name=share_name)[0]
-            ShareRecord.objects.bulk_create([self.get_record_from_line(share, line) for line in f.readlines()])
+            records = [self.get_record_from_line(share, line) for line in f.readlines()]
+            share.first_record = records[0].date
+            share.last_record = records[-1].date
+            share.records = len(records)
+            share.save()
+            ShareRecord.objects.bulk_create(records)
         self.update_status['processing']['current'] += 1
         self.update_status['processing']['percent'] = round(self.update_status['processing']['current']
                                                             / self.update_status['processing']['total'] * 100)

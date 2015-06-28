@@ -54,5 +54,5 @@ class GroupDeleteView(LoginRequiredMixin, DeleteView):
 class GroupUpdateView(LoginRequiredMixin, UpdateView):
     model = ShareGroup
     template_name = 'shares/groups/group_update.html'
-    fields = ['name', 'shares']
+    fields = ['visible_name', 'shares']
     success_url = reverse_lazy('shares:group-list')

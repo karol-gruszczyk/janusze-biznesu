@@ -7,7 +7,7 @@ from django.conf import settings
 from django.template.defaultfilters import filesizeformat
 import wget
 from utils import Singleton
-from apps.shares.models import Share, ShareRecord
+from apps.shares.models import Share, ShareRecord, ShareGroup
 
 
 class Updater(metaclass=Singleton):
@@ -77,17 +77,19 @@ class Updater(metaclass=Singleton):
         return ShareRecord(share=share, date=date, open=cols[2], high=cols[3],
                            low=cols[4], close=cols[5], volume=cols[6])
 
-    def update_share(self, path_name, file_name):
+    def update_share(self, path_name, file_name, group_name):
         with open(os.path.join(path_name, file_name), 'r') as f:
             f.readline()
             share_name = os.path.splitext(file_name)[0]
             share = Share.objects.update_or_create(name=share_name)[0]
             records = [self.get_record_from_line(share, line) for line in f.readlines()]
-            share.first_record = records[0].date
-            share.last_record = records[-1].date
-            share.records = len(records)
-            share.save()
-            ShareRecord.objects.bulk_create(records)
+        share.first_record = records[0].date
+        share.last_record = records[-1].date
+        share.records = len(records)
+        share.save()
+        ShareRecord.objects.bulk_create(records)
+        group = ShareGroup.objects.update_or_create(name=group_name)[0]
+        group.shares.add(share)
         self.update_status['processing']['current'] += 1
         self.update_status['processing']['percent'] = round(self.update_status['processing']['current']
                                                             / self.update_status['processing']['total'] * 100)
@@ -97,9 +99,9 @@ class Updater(metaclass=Singleton):
         self.update_status['processing']['current'] = 0
         self.update_status['processing']['total'] = sum(len(os.listdir(i)) for i in dirs.values())
         ShareRecord.objects.all().delete()
-        for db_type, path_name in dirs.items():
+        for group, path_name in dirs.items():
             for file_name in os.listdir(path_name):
-                self.update_share(path_name, file_name)
+                self.update_share(path_name, file_name, group)
 
     def clean_up(self, dl_files, dl_dirs):
         self.update_status['processing']['action'] = 'cleaning up'

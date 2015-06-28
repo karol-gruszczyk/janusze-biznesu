@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Database name</th>
                 <th>Shares</th>
                 <th>Update</th>
                 <th>Delete</th>
@@ -16,8 +17,13 @@
         <tbody>
         {% for group in object_list %}
             <tr>
+                <td>{{ group }}</td>
                 <td>{{ group.name }}</td>
-                <td>duuupa</td>
+                <td>
+                    {% for share in group.shares.all %}
+                        <p>{{ share }}</p>
+                    {% endfor %}
+                </td>
                 <td><a href="{% url 'shares:group-update' group.pk %}" class="btn btn-block btn-info">Edit</a></td>
                 <td><a href="{% url 'shares:group-delete' group.pk %}" class="btn btn-block btn-danger">Delete</a></td>
             </tr>

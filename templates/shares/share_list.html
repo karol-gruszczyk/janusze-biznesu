@@ -19,7 +19,11 @@
                 <td><a href="{% url 'shares:record-list' share.pk %}">{{ share }}</a></td>
                 <td>{{ share.records }}</td>
                 <td>{{ share.first_record }} - {{ share.last_record }}</td>
-                <td>{{ share.groups }}</td>
+                <td>
+                    {% for group in share.sharegroup_set.all %}
+                        <p>{{ group }}</p>
+                    {% endfor %}
+                </td>
                 <td><a href="{% url 'shares:share-update' share.pk %}" class="btn btn-block btn-info">Edit</a></td>
             </tr>
         {% endfor %}

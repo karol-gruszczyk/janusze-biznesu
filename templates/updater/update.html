@@ -74,7 +74,7 @@
       function updateProgressBars() {
         $.getJSON("{% url 'updater:status-api' %}", function(data) {
           $("#current_file_name_div").text(data.file.name);
-          $("#current_file_done_div").text(data.file.done);
+          $("#current_file_done_div").text(data.file.current);
           $("#current_file_total_div").text(data.file.total);
           $("#current_file_percent_div").text(data.file.percent);
           $("#current_file_bar_div").width(String(data.file.percent) + '%');

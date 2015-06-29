@@ -17,6 +17,12 @@ def updater_status_api(request):
 
 
 @login_required
-def full_import(request):
-    Updater().update_whole_database()
+def import_whole_view(request):
+    Updater().import_whole_database()
+    return render(request, 'updater/update.html', {})
+
+
+@login_required
+def import_few_last_view(request):
+    Updater().import_few_last()
     return render(request, 'updater/update.html', {})

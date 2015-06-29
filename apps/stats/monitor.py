@@ -22,7 +22,6 @@ class SystemMonitor(metaclass=Singleton):
         self.os = platform.system() + ' ' + platform.uname().release
         self.ram_total = psutil.virtual_memory().total
         self.swap_total = psutil.swap_memory().total
-        print(psutil.boot_time())
         self.boot_time = datetime.fromtimestamp(psutil.boot_time())
         self._init_cpu()
         self.network_traffic_stats = [['time', 'download', 'upload']]

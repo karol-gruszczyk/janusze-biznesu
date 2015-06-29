@@ -24,6 +24,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'widget_tweaks',
     'rest_framework',
+    'debug_toolbar',
     'apps.shares',
     'apps.stats',
 )
@@ -96,6 +97,8 @@ STATICFILES_DIRS = (
 
 LOGIN_REDIRECT_URL = '/'
 
+DATABASE_UPDATE_URL = 'http://bossa.pl/pub/ciagle/omega/cgl/few_last.zip'
+DATABASE_LIST_URL = 'http://bossa.pl/pub/ciagle/omega/omegacgl.lst'
 DATABASE_SOURCE_URLS = {
     'shares': 'http://bossa.pl/pub/ciagle/omega/omegacgl.zip',
     'currencies': 'http://bossa.pl/pub/waluty/omega/omeganbp.zip',

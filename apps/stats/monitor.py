@@ -28,7 +28,7 @@ class SystemMonitor(metaclass=Singleton):
         self.net_bytes_sent = psutil.net_io_counters().bytes_sent
         self.net_bytes_received = psutil.net_io_counters().bytes_recv
         self.stats_timer_interval = 10
-        self.stats_elements = 60
+        self.stats_elements = 3600 * 24 / self.stats_timer_interval  # stats from last 24 hours
         self.stats_timer = None
         self.global_data = {'stats_interval': self.stats_timer_interval * 1000}
         self.update_stats()
@@ -39,7 +39,15 @@ class SystemMonitor(metaclass=Singleton):
 
     @classmethod
     def get_cpu_temp(cls):
-        return 0
+        temps_str = subprocess.check_output("sensors", shell=True).strip()
+        cpu_sector = False
+        for line in temps_str.split(b'\n'):
+            if cpu_sector:
+                temps = re.findall(b'\+(\d{1,3}\.\d)..C', line)
+                if temps:
+                    return float(temps[0])
+            elif b'coretemp' in line:
+                cpu_sector = True
 
     def update_stats(self):
         time_now = str(datetime.now().time()).split('.')[0]
@@ -98,9 +106,7 @@ class SystemMonitor(metaclass=Singleton):
         data = {
             'name': self.cpu_name,
             'count': self.cpu_count,
-            'logical_count': self.cpu_logical_count,
-            'load': psutil.cpu_percent(),
-            'temperature': 'over 9000',
+            'logical_count': self.cpu_logical_count
         }
         data.update(self.global_data)
         return data

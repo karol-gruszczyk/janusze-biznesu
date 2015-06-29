@@ -6,7 +6,7 @@ from .models import Share, ShareRecord
 class ShareRecordSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ShareRecord
-        fields = ('date', 'open', 'close', 'low', 'close', 'volume')
+        fields = ('date', 'open', 'close', 'low', 'high', 'volume')
 
 
 class ShareSerializer(serializers.HyperlinkedModelSerializer):

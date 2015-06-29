@@ -1,0 +1,62 @@
+{% extends 'navbar.html' %}
+
+{% block headertext %}Share {{ share }}{% endblock headertext %}
+{% block content %}
+    <dl class="dl-horizontal">
+        <dt>Records:</dt>
+        <dd>{{ share.records }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Time span:</dt>
+        <dd>{{ share.first_record }} - {{ share.last_record }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Groups:</dt>
+        <dd>
+            {{ share.sharegroup_set.all|join:", " }}
+        </dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Chart:</dt>
+        <dd style="width: 200px;">
+            <select name="value" onChange="drawLoadChart(this.value)" class="form-control">
+                <option value="close">close</option>
+                <option value="open">open</option>
+                <option value="high">high</option>
+                <option value="low">low</option>
+                <option value="volume">volume</option>
+            </select>
+        </dd>
+    </dl>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(function() { drawLoadChart('close') });
+        function drawLoadChart(yaxis) {
+            var chartData = [["Date", yaxis]];
+            $.getJSON("{% url 'api-shares:record-list' share.pk %}?format=json", function(data) {
+                $.each(data, function(idx, row) {
+                    chartData.push([new Date(row.date), row[yaxis]]);
+                });
+                console.log(chartData);
+                var loadData = google.visualization.arrayToDataTable(chartData);
+                var loadOptions = {
+                    explorer: {
+                        maxZoomOut: 1,
+                        maxZoomIn: 20,
+                        keepInBounds: true
+                    },
+                    vAxis: {
+                        format:'# PLN'
+                    }
+                };
+                var loadChart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                loadChart.draw(loadData, loadOptions);
+            });
+        }
+    </script>
+{% endblock extra_scripts %}

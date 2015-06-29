@@ -6,7 +6,8 @@ A powerfull tool for predicting the stock exchange.
 * python 3
 * pip
 * virtualenv
-* python header files(python-dev package)
+* python3-dev (python header files)
+* lm-sensors (temperature sensors package)
 
 ### Setup
 ```bash

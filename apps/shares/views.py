@@ -1,9 +1,9 @@
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import get_object_or_404
 from braces.views import LoginRequiredMixin
-from .models import Share, ShareRecord, ShareGroup
+from .models import Share, ShareGroup
 
 
 class ShareListView(LoginRequiredMixin, ListView):
@@ -19,18 +19,9 @@ class ShareUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('shares:share-list')
 
 
-class ShareRecordListView(LoginRequiredMixin, ListView):
-    model = ShareRecord
-    template_name = 'shares/share_record_list.html'
-
-    def get_queryset(self):
-        qs = super(ShareRecordListView, self).get_queryset()
-        return qs.filter(share__pk=self.kwargs['pk'])
-
-    def get_context_data(self, **kwargs):
-        context = super(ShareRecordListView, self).get_context_data()
-        context['share'] = get_object_or_404(Share, pk=self.kwargs['pk'])
-        return context
+class ShareDetailView(LoginRequiredMixin, DetailView):
+    model = Share
+    template_name = 'shares/share_detail.html'
 
 
 class GroupListView(LoginRequiredMixin, ListView):

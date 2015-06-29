@@ -31,8 +31,8 @@ class Share(models.Model):
 
 
 class ShareRecord(models.Model):
-    share = models.ForeignKey(Share, null=False)
-    date = models.DateField(null=False)
+    share = models.ForeignKey(Share, null=False, db_index=True)
+    date = models.DateField(null=False, db_index=True)
     open = models.FloatField(null=False)
     close = models.FloatField(null=False)
     high = models.FloatField(null=False)

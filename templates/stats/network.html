@@ -11,8 +11,12 @@
         <dd>{{ mac_address }}</dd>
     </dl>
     <dl class="dl-horizontal">
-        <dt>IP address</dt>
-        <dd>{{ ip_address }}</dd>
+        <dt>Local IP address</dt>
+        <dd>{{ local_ip_address }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>Global IP address</dt>
+        <dd>{{ global_ip_address }}</dd>
     </dl>
     <dl class="dl-horizontal">
         <dt>Data sent</dt>
@@ -35,21 +39,21 @@
 {% block extra_scripts %}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawLoadChart);
-      function drawLoadChart() {
-        $.getJSON("{% url 'stats:api-network' %}", function(data) {
-          var data = google.visualization.arrayToDataTable(data.traffic_stats);
-          var options = {
-            vAxis: {
-              minValue: 0,
-              format:'#.## Mbps'
-            }
-          };
-          var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-          chart.draw(data, options);
-        });
-      }
-      setInterval(drawLoadChart, {{ stats_interval }});
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawLoadChart);
+        function drawLoadChart() {
+            $.getJSON("{% url 'stats:api-network' %}", function(data) {
+                var data = google.visualization.arrayToDataTable(data.traffic_stats);
+                var options = {
+                    vAxis: {
+                        minValue: 0,
+                        format:'#.## Mbps'
+                    }
+                };
+                var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            });
+        }
+        setInterval(drawLoadChart, {{ stats_interval }});
     </script>
 {% endblock extra_scripts %}

@@ -3,6 +3,10 @@
 {% block headertext %}Share {{ share }}{% endblock headertext %}
 {% block content %}
     <dl class="dl-horizontal">
+        <dt>Database name:</dt>
+        <dd>{{ share.name }}</dd>
+    </dl>
+    <dl class="dl-horizontal">
         <dt>Records:</dt>
         <dd>{{ share.records }}</dd>
     </dl>

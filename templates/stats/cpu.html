@@ -39,33 +39,33 @@
 {% block extra_scripts %}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawLoadChart);
-      function drawLoadChart() {
-        $.getJSON("{% url 'stats:api-cpu' %}", function(data) {
-          var loadData = google.visualization.arrayToDataTable(data.load_stats);
-          var loadOptions = {
-            vAxis: {
-              minValue: 0,
-              maxValue: 100,
-              format:'# \'%\''
-            }
-          };
-          var loadChart = new google.visualization.AreaChart(document.getElementById('load_chart_div'));
-          loadChart.draw(loadData, loadOptions);
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawLoadChart);
+        function drawLoadChart() {
+            $.getJSON("{% url 'stats:api-cpu' %}", function(data) {
+                var loadData = google.visualization.arrayToDataTable(data.load_stats);
+                var loadOptions = {
+                vAxis: {
+                    minValue: 0,
+                    maxValue: 100,
+                    format:'# \'%\''
+                }
+            };
+            var loadChart = new google.visualization.AreaChart(document.getElementById('load_chart_div'));
+            loadChart.draw(loadData, loadOptions);
 
-          var tempData = google.visualization.arrayToDataTable(data.temp_stats);
-          var tempOptions = {
+            var tempData = google.visualization.arrayToDataTable(data.temp_stats);
+            var tempOptions = {
             vAxis: {
-              minValue: 0,
-              maxValue: 100,
-              format:'# °C'
+                minValue: 0,
+                maxValue: 100,
+                format:'# °C'
             }
-          };
-          var tempChart = new google.visualization.AreaChart(document.getElementById('temp_chart_div'));
-          tempChart.draw(tempData, tempOptions);
+        };
+        var tempChart = new google.visualization.AreaChart(document.getElementById('temp_chart_div'));
+        tempChart.draw(tempData, tempOptions);
         });
-      }
-      setInterval(drawLoadChart, {{ stats_interval }});
+    }
+    setInterval(drawLoadChart, {{ stats_interval }});
     </script>
 {% endblock extra_scripts %}

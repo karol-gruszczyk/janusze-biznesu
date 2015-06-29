@@ -1,11 +1,12 @@
+import re
+import uuid
 import psutil
 import socket
 import platform
 import subprocess
-import uuid
-import re
 from threading import Timer
 from datetime import datetime
+from requests import get
 from utils import Singleton
 
 
@@ -115,7 +116,8 @@ class SystemMonitor(metaclass=Singleton):
         data = {
             'hostname': self.hostname,
             'mac_address': ':'.join(("%012X" % uuid.getnode())[i:i + 2] for i in range(0, 12, 2)),
-            'ip_address': socket.gethostbyname(socket.gethostname()),
+            'local_ip_address': socket.gethostbyname(socket.gethostname()),
+            'global_ip_address': get("http://jsonip.com").json()["ip"],
             'bytes_sent': self.net_bytes_sent,
             'bytes_received': self.net_bytes_received
         }

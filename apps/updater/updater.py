@@ -77,7 +77,7 @@ class Updater(metaclass=Singleton):
         return ShareRecord(share=share, date=date, open=cols[2], high=cols[3],
                            low=cols[4], close=cols[5], volume=cols[6])
 
-    def update_share(self, path_name, file_name, group_name):
+    def import_share(self, path_name, file_name, group_name):
         with open(os.path.join(path_name, file_name), 'r') as f:
             f.readline()
             share_name = os.path.splitext(file_name)[0]
@@ -101,7 +101,7 @@ class Updater(metaclass=Singleton):
         ShareRecord.objects.all().delete()
         for group, path_name in dirs.items():
             for file_name in os.listdir(path_name):
-                self.update_share(path_name, file_name, group)
+                self.import_share(path_name, file_name, group)
 
     def clean_up(self, dl_files, dl_dirs):
         self.update_status['processing']['action'] = 'cleaning up'

@@ -18,7 +18,7 @@ class ShareManager(models.Manager):
 
 class Share(models.Model):
     name = models.CharField(max_length=32, db_index=True, unique=True)
-    visible_name = models.CharField(max_length=64, null=True)
+    visible_name = models.CharField(max_length=64, null=True, blank=True)
     updated_daily = models.BooleanField(default=False)
     first_record = models.DateField(null=True)
     last_record = models.DateField(null=True)

@@ -54,7 +54,7 @@ class SystemMonitor(metaclass=Singleton):
         time_now = str(datetime.now().time()).split('.')[0]
         # cpu load
         self.cpu_load_stats.append([time_now] + psutil.cpu_percent(percpu=True))
-        if len(self.cpu_load_stats) > 61:
+        if len(self.cpu_load_stats) > self.stats_elements:
             del self.cpu_load_stats[1]
 
         # cpu temperature

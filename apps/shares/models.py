@@ -18,8 +18,9 @@ class ShareManager(models.Manager):
 
 class Share(models.Model):
     name = models.CharField(max_length=32, db_index=True, unique=True)
-    visible_name = models.CharField(max_length=64, null=True, blank=True)
+    verbose_name = models.CharField(max_length=64, null=True, blank=True)
     updated_daily = models.BooleanField(default=False)
+    last_updated = models.DateTimeField(null=True)
     first_record = models.DateField(null=True)
     last_record = models.DateField(null=True)
     records = models.PositiveIntegerField(null=True)
@@ -27,7 +28,7 @@ class Share(models.Model):
     objects = ShareManager()
 
     def __str__(self):
-        return self.visible_name if self.visible_name else self.name
+        return self.verbose_name if self.verbose_name else self.name
 
 
 class ShareRecord(models.Model):
@@ -42,8 +43,8 @@ class ShareRecord(models.Model):
 
 class ShareGroup(models.Model):
     name = models.CharField(max_length=32, db_index=True, unique=True)
-    visible_name = models.CharField(max_length=64, null=True)
+    verbose_name = models.CharField(max_length=64, null=True)
     shares = models.ManyToManyField(Share, blank=True)
 
     def __str__(self):
-        return self.visible_name if self.visible_name else self.name
+        return self.verbose_name if self.verbose_name else self.name

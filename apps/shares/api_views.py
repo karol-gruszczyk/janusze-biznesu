@@ -12,7 +12,7 @@ class ShareRecordSerializer(serializers.HyperlinkedModelSerializer):
 class ShareSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Share
-        fields = ('name', 'visible_name', 'updated_daily')
+        fields = ('name', 'verbose_name', 'updated_daily')
 
 
 class ShareListAPIView(generics.ListAPIView):

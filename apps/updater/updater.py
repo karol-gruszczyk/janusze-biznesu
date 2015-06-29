@@ -6,6 +6,7 @@ from zipfile import ZipFile
 from django.conf import settings
 from django.template.defaultfilters import filesizeformat
 import wget
+import requests
 from utils import Singleton
 from apps.shares.models import Share, ShareRecord, ShareGroup
 
@@ -102,6 +103,23 @@ class Updater(metaclass=Singleton):
         for group, path_name in dirs.items():
             for file_name in os.listdir(path_name):
                 self.import_share(path_name, file_name, group)
+        self.get_additional_info()
+
+    def get_additional_info(self):
+        self.update_status['processing']['action'] = 'updating database info'
+        text = requests.get(settings.DATABASE_LIST_URL).text
+        for line in text.split('\n')[3:-3]:  # 3 first and 2 last lines contain file info
+            info = line.strip().split()
+            name = info[4].strip('.txt')
+            try:
+                share = Share.objects.get(name=name)
+            except Share.DoesNotExist:
+                continue
+            date = datetime.strptime(" ".join(info[0:2]), "%Y-%m-%d %H:%M")
+            verbose_name = " ".join(info[5:])
+            share.last_updated = date
+            share.verbose_name = verbose_name
+            share.save()
 
     def clean_up(self, dl_files, dl_dirs):
         self.update_status['processing']['action'] = 'cleaning up'
@@ -122,6 +140,7 @@ class Updater(metaclass=Singleton):
             dl_files = self.download_files()
             dl_dirs = self.extract_zip_files(dl_files)
             self.process_files(dl_dirs)
+            self.get_additional_info()
             self.clean_up(dl_files, dl_dirs)
             self.is_updating = False
             self.thread = None

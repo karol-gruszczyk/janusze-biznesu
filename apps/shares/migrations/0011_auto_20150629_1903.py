@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='share',
-            name='visible_name',
+            name='verbose_name',
             field=models.CharField(max_length=64, null=True, blank=True),
         ),
         migrations.AlterField(

@@ -6,7 +6,7 @@ import platform
 import subprocess
 from threading import Timer
 from datetime import datetime
-from requests import get
+import requests
 from utils import Singleton
 
 
@@ -22,8 +22,8 @@ class SystemMonitor(metaclass=Singleton):
         self.os = platform.system() + ' ' + platform.uname().release
         self.ram_total = psutil.virtual_memory().total
         self.swap_total = psutil.swap_memory().total
-        time = datetime.fromtimestamp(psutil.boot_time())
-        self.boot_time = datetime(time.year, time.month, time.day, time.hour, time.minute)
+        print(psutil.boot_time())
+        self.boot_time = datetime.fromtimestamp(psutil.boot_time())
         self._init_cpu()
         self.network_traffic_stats = [['time', 'download', 'upload']]
         self.net_bytes_sent = psutil.net_io_counters().bytes_sent
@@ -117,7 +117,7 @@ class SystemMonitor(metaclass=Singleton):
             'hostname': self.hostname,
             'mac_address': ':'.join(("%012X" % uuid.getnode())[i:i + 2] for i in range(0, 12, 2)),
             'local_ip_address': socket.gethostbyname(socket.gethostname()),
-            'global_ip_address': get("http://jsonip.com").json()["ip"],
+            'global_ip_address': requests.get("http://jsonip.com").json()["ip"],
             'bytes_sent': self.net_bytes_sent,
             'bytes_received': self.net_bytes_received
         }

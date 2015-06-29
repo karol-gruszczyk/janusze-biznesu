@@ -15,7 +15,7 @@ class ShareListView(LoginRequiredMixin, ListView):
 class ShareUpdateView(LoginRequiredMixin, UpdateView):
     model = Share
     template_name = 'shares/share_update.html'
-    fields = ['visible_name', 'updated_daily']
+    fields = ['verbose_name', 'updated_daily']
     success_url = reverse_lazy('shares:share-list')
 
 
@@ -45,5 +45,5 @@ class GroupDeleteView(LoginRequiredMixin, DeleteView):
 class GroupUpdateView(LoginRequiredMixin, UpdateView):
     model = ShareGroup
     template_name = 'shares/groups/group_update.html'
-    fields = ['visible_name', 'shares']
+    fields = ['verbose_name', 'shares']
     success_url = reverse_lazy('shares:group-list')

@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('shares', '0006_auto_20150626_1802'),
+        ('shares', '0011_auto_20150629_1903'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='share',
-            name='verbose_name',
-            field=models.CharField(null=True, max_length=64),
+            name='last_updated',
+            field=models.DateTimeField(null=True),
         ),
     ]

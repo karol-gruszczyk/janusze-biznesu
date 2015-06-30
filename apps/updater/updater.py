@@ -5,6 +5,7 @@ from datetime import datetime
 from zipfile import ZipFile
 from django.conf import settings
 from django.template.defaultfilters import filesizeformat
+import pytz
 import wget
 import requests
 from utils import Singleton
@@ -27,36 +28,20 @@ class Updater(metaclass=Singleton):
 
     def init_statuses(self):
         self.update_status = {
-            'file': {
-                'current': 0,
-                'total': 0,
-                'percent': 0,
-                'name': 'none'  # rename to action
-            },
-            'download': {
-                'current': 0,
-                'total': 0,
-                'percent': 0,
-                'action': ''
-            },
-            'processing': {
-                'action': 'waiting for download to complete',
-                'current': 0,
-                'total': 0,
-                'percent': 0
-            }
+            'file': {},
+            'download': {},
+            'processing': {}
         }
+        self.init_status(self.update_status['file'], 'Waiting ...', 0)
+        self.init_status(self.update_status['download'], 'Waiting ...', 0)
+        self.init_status(self.update_status['processing'], 'Waiting ...', 0)
 
     @classmethod
-    def init_status(cls, status, action, iterable):
+    def init_status(cls, status, job, total):
         status['current'] = 0
         status['percent'] = 0
-        if isinstance(iterable[0], list):
-            total = sum([len(i) for i in iterable])
-        else:
-            total = len(iterable)
         status['total'] = total
-        status['action'] = action
+        status['job'] = job
 
     @classmethod
     def update_percent(cls, status):
@@ -74,19 +59,22 @@ class Updater(metaclass=Singleton):
             self.update_percent(self.update_status['file'])
             return ''
 
-        self.update_status['file']['name'] = file_url
+        self.update_status['file']['job'] = 'Downloading {} ...'.format(file_url)
         file_path = wget.download(url=file_url, out='/tmp', bar=__download_func)
         self.increment_status(self.update_status['download'])
         return file_path
 
-    def download_files(self):
+    def download_files(self, files):
+        self.init_status(self.update_status['download'], 'Downloading ...', len(files))
         dl_files = {}
-        for key, value in settings.DATABASE_SOURCE_URLS.items():
+        for key, value in files.items():
             dl_files[key] = self.download_file(value)
+        self.update_status['file']['job'] = 'Done.'
+        self.update_status['download']['job'] = 'Done.'
         return dl_files
 
     def extract_zip_files(self, files):
-        self.update_status['processing']['action'] = 'extracting files'  # fast, no need for percent
+        self.update_status['processing']['job'] = 'Extracting files ...'  # fast, no need for percent
         path_dirs = {}
         for db_type, path in files.items():
             dir_name = path + '_unpack'
@@ -132,47 +120,49 @@ class Updater(metaclass=Singleton):
         self.increment_status(self.update_status['processing'])
 
     def process_db_files(self, dirs):
-        self.init_status(self.update_status['processing'], 'parsing files', [os.listdir(i) for i in dirs.values()])
+        total = sum(len(os.listdir(i)) for i in dirs.values())
+        self.init_status(self.update_status['processing'], 'Parsing files ...', total)
         ShareRecord.objects.all().delete()
         for group, path_name in dirs.items():
             for file_name in os.listdir(path_name):
                 self.import_share(path_name, file_name, group)
         self.get_additional_info()
 
-    def process_day_files(self, dirs):
-        self.init_status(self.update_status['processing'], 'parsing files', [os.listdir(i) for i in dirs.values()])
-        for group, path in dirs.items():
-            for file_name in os.listdir(path):
-                with open(os.path.join(path, file_name), 'r') as f:
-                    for line in f.readlines():
-                        self.create_record_from_line(line)
-                self.increment_status(self.update_status['processing'])
+    def process_day_files(self, path):
+        file_names = os.listdir(path)
+        self.init_status(self.update_status['processing'], 'Parsing files ...', len(file_names))
+        for file_name in file_names:
+            with open(os.path.join(path, file_name), 'r') as f:
+                for line in f.readlines():
+                    self.create_record_from_line(line)
+            self.increment_status(self.update_status['processing'])
         self.get_additional_info()
 
     def get_additional_info(self):
         lines = requests.get(settings.DATABASE_LIST_URL).text.split('\n')[3:-3]
-        self.init_status(self.update_status['processing'], 'updating database info', lines)
+        self.init_status(self.update_status['processing'], 'Updating database info ...', len(lines))
         for line in lines:  # 3 first and 2 last lines contain file info
             info = line.strip().split()
             name = info[4].strip('.txt')
+            self.increment_status(self.update_status['processing'])
             try:
                 share = Share.objects.get(name=name)
             except Share.DoesNotExist:
                 continue
             date = datetime.strptime(" ".join(info[0:2]), "%Y-%m-%d %H:%M")
+            date.replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
             verbose_name = " ".join(info[5:])
             share.last_updated = date
             share.verbose_name = verbose_name
             share.save()
-            self.increment_status(self.update_status['processing'])
 
     def clean_up(self, dl_files, dl_dirs):
-        self.update_status['processing']['action'] = 'cleaning up'
+        self.update_status['processing']['job'] = 'Cleaning up ...'
         for dl_file in dl_files.values():
             os.remove(dl_file)
         for dl_dir in dl_dirs.values():
             shutil.rmtree(dl_dir)
-        self.update_status['processing']['action'] = 'done'
+        self.update_status['processing']['job'] = 'Done.'
 
     def import_whole_database(self):
         if not self.thread:
@@ -181,8 +171,7 @@ class Updater(metaclass=Singleton):
         elif not self.is_updating:
             self.is_updating = True
             self.init_statuses()
-            self.update_status['download']['total'] = len(settings.DATABASE_SOURCE_URLS)
-            dl_files = self.download_files()
+            dl_files = self.download_files(settings.DATABASE_SOURCE_URLS)
             dl_dirs = self.extract_zip_files(dl_files)
             self.process_db_files(dl_dirs)
             self.get_additional_info()
@@ -198,8 +187,9 @@ class Updater(metaclass=Singleton):
             self.is_updating = True
             self.init_statuses()
             self.update_status['download']['total'] = 1
-            dl_file = {'few_last': self.download_file(settings.DATABASE_UPDATE_URL)}
+            dl_file = self.download_files({'few_last': settings.DATABASE_UPDATE_URL})
             dl_dir = self.extract_zip_files(dl_file)
-            self.process_day_files(dl_dir)
+            self.process_day_files(dl_dir['few_last'])
             self.clean_up(dl_file, dl_dir)
+            self.is_updating = False
             self.thread = None

@@ -6,3 +6,4 @@ django-debug-toolbar
 requests
 psutil
 wget
+pytz

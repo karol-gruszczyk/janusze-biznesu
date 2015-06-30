@@ -21,10 +21,7 @@ class Updater(metaclass=Singleton):
         self.init_statuses()
 
     def get_update_status(self):
-        data = self.update_status.copy()
-        data['file']['current'] = filesizeformat(data['file']['current'])
-        data['file']['total'] = filesizeformat(data['file']['total'])
-        return data
+        return self.update_status
 
     def init_statuses(self):
         self.update_status = {
@@ -57,6 +54,8 @@ class Updater(metaclass=Singleton):
             self.update_status['file']['current'] = current
             self.update_status['file']['total'] = total
             self.update_percent(self.update_status['file'])
+            self.update_status['file']['current'] = filesizeformat(current)
+            self.update_status['file']['total'] = filesizeformat(total)
             return ''
 
         self.update_status['file']['job'] = 'Downloading {} ...'.format(file_url)

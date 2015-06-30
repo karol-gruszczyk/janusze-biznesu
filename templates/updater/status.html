@@ -2,15 +2,110 @@
 
 {% block headertext %}Updater status{% endblock headertext %}
 {% block content %}
+
+
+    <dl class="dl-horizontal">
+        <dt>Last update</dt>
+        <dd>{{ last_update }}</dd>
+    </dl>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Status {% if not is_updating %}(No update in progress){% endif %}</h3>
+        </div>
+        <div class="list-group">
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        <strong id="current_file_job_div"></strong>
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">
+                            <span id="current_file_current_div"></span>
+                            /
+                            <span id="current_file_total_div"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div id="current_file_bar_div" class="progress-bar progress-bar-success active">
+                        <span id="current_file_percent_div"></span>%
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        <strong id="download_job_div"></strong>
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">
+                            <span id="download_current_div"></span>
+                            /
+                            <span id="download_total_div"></span> files
+                        </span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div id="download_bar_div" class="progress-bar progress-bar-success active">
+                        <span id="download_percent_div"></span>%
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                 <div>
+                    <div class="col-sm-8">
+                        <strong id="processing_job_div"></strong>
+                    </div>
+                    <div class="text-right">
+                        <span class="label label-info">
+                            <span id="processing_current_div"></span>
+                            /
+                            <span id="processing_total_div"></span> files
+                        </span>
+                    </div>
+                </div>
+                <div class="progress progress-striped">
+                    <div id="processing_bar_div" class="progress-bar progress-bar-success active">
+                        <span id="processing_percent_div"></span>%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <a href="{% url 'updater:import-db' %}" class="btn btn-success">
         <span class="glyphicon glyphicon-plus"></span> Import whole database
     </a>
     <a href="{% url 'updater:import-few-last' %}" class="btn btn-success">
         <span class="glyphicon glyphicon-plus"></span> Import few last
     </a>
-    <dl class="dl-horizontal">
-        <dt>Last update</dt>
-        <dd>neva</dd>
-    </dl>
-
 {% endblock content %}
+
+{% block extra_scripts %}
+    <script type="text/javascript">
+        $(document).ready(updateProgressBars);
+        function updateProgressBars() {
+            $.getJSON("{% url 'updater:status-api' %}", function(data) {
+                $("#current_file_job_div").text(data.file.job);
+                $("#current_file_current_div").text(data.file.current);
+                $("#current_file_total_div").text(data.file.total);
+                $("#current_file_percent_div").text(data.file.percent);
+                $("#current_file_bar_div").width(String(data.file.percent) + '%');
+
+                $("#download_job_div").text(data.download.job);
+                $("#download_current_div").text(data.download.current);
+                $("#download_total_div").text(data.download.total);
+                $("#download_percent_div").text(data.download.percent);
+                $("#download_bar_div").width(String(data.download.percent) + '%');
+
+                $("#processing_job_div").text(data.processing.job);
+                $("#processing_current_div").text(data.processing.current);
+                $("#processing_total_div").text(data.processing.total);
+                $("#processing_percent_div").text(data.processing.percent);
+                $("#processing_bar_div").width(String(data.processing.percent) + '%');
+            });
+        }
+      setInterval(updateProgressBars, 2000);
+    </script>
+{% endblock extra_scripts %}

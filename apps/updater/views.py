@@ -1,13 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .updater import Updater
+from apps.shares.models import Share
 
 
 @login_required
 def updater_status(request):
-    Updater()
-    return render(request, 'updater/status.html', {})
+    last_update = Share.objects.all().latest().last_updated
+    data = {
+        'is_updating': Updater().is_updating,
+        'last_update': last_update
+    }
+    return render(request, 'updater/status.html', data)
 
 
 @login_required
@@ -19,10 +24,10 @@ def updater_status_api(request):
 @login_required
 def import_whole_view(request):
     Updater().import_whole_database()
-    return render(request, 'updater/update.html', {})
+    return redirect('updater:status')
 
 
 @login_required
 def import_few_last_view(request):
     Updater().import_few_last()
-    return render(request, 'updater/update.html', {})
+    return redirect('updater:status')

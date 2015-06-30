@@ -27,6 +27,9 @@ class Share(models.Model):
 
     objects = ShareManager()
 
+    class Meta:
+        get_latest_by = 'last_updated'
+
     def __str__(self):
         return self.verbose_name if self.verbose_name else self.name
 

@@ -1,10 +1,10 @@
 {% extends 'navbar.html' %}
 
-{% block headertext %}Delete share group{% endblock headertext %}
+{% block headertext %}Delete task{% endblock headertext %}
 {% block content %}
     <form class="form-horizontal well" action="" method="post">
         {% csrf_token %}
-        <p>Are you sure you want to delete share group "{{ object }}"?</p>
+        <p>Are you sure you want to delete task "{{ object }}"?</p>
         <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
 {% endblock %}

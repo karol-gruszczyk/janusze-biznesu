@@ -6,6 +6,7 @@ from apps.shares import urls as shares_urls
 from apps.shares import api_urls as shares_api_urls
 from apps.stats import urls as stats_urls
 from apps.updater import urls as updater_urls
+from apps.tasks import urls as tasks_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -19,4 +20,5 @@ urlpatterns = [
     url(r'^api/', include(shares_api_urls, namespace='api-shares')),
     url(r'^updater/', include(updater_urls, namespace='updater')),
     url(r'^stats/', include(stats_urls, namespace='stats')),
+    url(r'^tasks/', include(tasks_urls, namespace='tasks')),
 ]

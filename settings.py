@@ -27,6 +27,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'apps.shares',
     'apps.stats',
+    'apps.tasks',
 )
 
 MIDDLEWARE_CLASSES = (

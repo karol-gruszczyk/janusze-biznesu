@@ -1,0 +1,28 @@
+{% extends 'navbar.html' %}
+
+{% block headertext %}Tasks{% endblock headertext %}
+{% block content %}
+    <a href="{% url 'tasks:task-create' %}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create task</a>
+    {% if object_list %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in object_list %}
+            <tr>
+                <td>{{ task.name }}</td>
+                <td><a href="{% url 'tasks:task-update' group.pk %}" class="btn btn-block btn-info">Edit</a></td>
+                <td><a href="{% url 'tasks:task-delete' group.pk %}" class="btn btn-block btn-danger">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <ul><li>No tasks yet.</li></ul>
+    {% endif %}
+{% endblock %}

@@ -64,8 +64,8 @@ class SystemMonitor(metaclass=Singleton):
         # network traffic
         net_io = psutil.net_io_counters()
         div = (2 << 16) * self.stats_timer_interval
-        d_sent = (net_io.bytes_sent - self.net_bytes_sent) / div
-        d_received = (net_io.bytes_recv - self.net_bytes_received) / div
+        d_sent = round((net_io.bytes_sent - self.net_bytes_sent) / div, 2)
+        d_received = round((net_io.bytes_recv - self.net_bytes_received) / div, 2)
         self.net_bytes_sent = net_io.bytes_sent
         self.net_bytes_received = net_io.bytes_recv
         self.network_traffic_stats.append([time_now, d_received, d_sent])

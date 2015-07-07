@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'rest_framework',
     'debug_toolbar',
+    'djcelery',
     'apps.shares',
     'apps.stats',
     'apps.tasks',
@@ -105,3 +106,6 @@ DATABASE_SOURCE_URLS = {
     'currencies': 'http://bossa.pl/pub/waluty/omega/omeganbp.zip',
     'foreign_shares': 'http://bossa.pl/pub/indzagr/omega/omegazgr.zip'
 }
+
+import djcelery
+djcelery.setup_loader()

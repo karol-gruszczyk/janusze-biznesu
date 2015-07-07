@@ -43,6 +43,10 @@ class ShareRecord(models.Model):
     low = models.FloatField(null=False)
     volume = models.FloatField(null=False)
 
+    class Meta:
+        unique_together = ('share', 'date',)
+        index_together = ['share', 'date']
+
 
 class ShareGroup(models.Model):
     name = models.CharField(max_length=32, db_index=True, unique=True)

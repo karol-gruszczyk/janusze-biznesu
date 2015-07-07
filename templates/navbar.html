@@ -2,50 +2,58 @@
 
 {% block navbar %}
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/">
-          <span class="glyphicon glyphicon-usd"></span>
-          Janusze Biznesu
-          <span class="glyphicon glyphicon-usd"></span>
-      </a>
-    </div>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <span class="glyphicon glyphicon-usd"></span>
+                    Janusze Biznesu
+                <span class="glyphicon glyphicon-usd"></span>
+            </a>
+        </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              Stock exchange<span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="{% url 'updater:status' %}">Update</a></li>
-            <li><a href="{% url 'shares:share-list' %}">Shares</a></li>
-            <li><a href="{% url 'shares:group-list' %}">Share groups</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Statistics<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="{% url 'stats:general' %}">General</a></li>
-            <li><a href="{% url 'stats:cpu' %}">CPU</a></li>
-            <li><a href="{% url 'stats:memory' %}">Memory</a></li>
-            <li><a href="{% url 'stats:network' %}">Network</a></li>
-          </ul>
-        </li>
-      </ul>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Stock exchange<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'updater:status' %}">Update</a></li>
+                        <li><a href="{% url 'shares:share-list' %}">Shares</a></li>
+                        <li><a href="{% url 'shares:group-list' %}">Share groups</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Tasks<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">Create task</a></li>
+                    </ul>
+                </li>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Settings</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ user.username }}<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Statistics<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'stats:general' %}">General</a></li>
+                        <li><a href="{% url 'stats:cpu' %}">CPU</a></li>
+                        <li><a href="{% url 'stats:memory' %}">Memory</a></li>
+                        <li><a href="{% url 'stats:network' %}">Network</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Settings</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ user.username }}<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
 </nav>
 {% endblock navbar %}

@@ -94,20 +94,18 @@ class Updater(metaclass=Singleton):
         cols = line.strip().split(',')  # assuming format is: Name,Date,Open,High,Low,Close,Volume
         name = cols[0]
         date = datetime.strptime(cols[1], '%Y%m%d')
-        data = {
-            'open': cols[2],
-            'high': cols[3],
-            'low': cols[4],
-            'close': cols[5],
-            'volume': cols[6]
-        }
-        ShareRecord.objects.get_or_create(share__name=name, date=date, defaults=data)
+        try:
+            ShareRecord.objects.get(share__name=name, date=date)
+        except ShareRecord.DoesNotExist:
+            share, created = Share.objects.get_or_create(name=name)
+            ShareRecord.objects.create(share=share, date=date, open=cols[2], high=cols[3],
+                                       low=cols[4], close=cols[5], volume=cols[6])
 
     def import_share(self, path_name, file_name, group_name):
         with open(os.path.join(path_name, file_name), 'r') as f:
             f.readline()
             share_name = os.path.splitext(file_name)[0]
-            share = Share.objects.update_or_create(name=share_name)[0]
+            share, created = Share.objects.get_or_create(name=share_name)
             records = [self.get_record_from_line(share, line) for line in f.readlines()]
         share.first_record = records[0].date
         share.last_record = records[-1].date

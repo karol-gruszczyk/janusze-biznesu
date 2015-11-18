@@ -21,7 +21,11 @@
                 <td>{{ group.name }}</td>
                 <td>
                     {% for share in group.shares.all %}
-                        <p>{{ share }}</p>
+                        {% if forloop.counter <= 3 %}
+                            <p>{{ share }}</p>
+                        {% elif forloop.counter == 4 and group.shares.all|length > 4 %}
+                            <p><a href="{% url 'shares:group-detail' group.pk %}">Show all</a></p>
+                        {% endif %}
                     {% endfor %}
                 </td>
                 <td><a href="{% url 'shares:group-update' group.pk %}" class="btn btn-block btn-info">Edit</a></td>

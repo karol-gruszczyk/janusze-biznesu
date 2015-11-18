@@ -7,6 +7,7 @@ from apps.shares import api_urls as shares_api_urls
 from apps.stats import urls as stats_urls
 from apps.updater import urls as updater_urls
 from apps.tasks import urls as tasks_urls
+from apps.gains import urls as gains_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -15,8 +16,9 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login),
     url(r'^accounts/logout/$', views.logout, {'next_page': '/'}),
 
-    # apps
-    url(r'', include(shares_urls, namespace='shares')),
+    # applications
+    url(r'^$', include(gains_urls, namespace='gains')),
+    url(r'^shares/', include(shares_urls, namespace='shares')),
     url(r'^api/', include(shares_api_urls, namespace='api-shares')),
     url(r'^updater/', include(updater_urls, namespace='updater')),
     url(r'^stats/', include(stats_urls, namespace='stats')),

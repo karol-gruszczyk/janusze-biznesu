@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from braces.views import LoginRequiredMixin
 from .models import Share, ShareGroup
+from .forms import ShareGroupForm
 
 
 class ShareListView(LoginRequiredMixin, ListView):
@@ -31,8 +32,8 @@ class GroupListView(LoginRequiredMixin, ListView):
 
 class GroupCreateView(LoginRequiredMixin, CreateView):
     model = ShareGroup
-    fields = ['name', 'shares']
-    template_name = 'shares/groups/group_create.html'
+    form_class = ShareGroupForm
+    template_name = 'shares/groups/group_form.html'
     success_url = reverse_lazy('shares:group-list')
 
 
@@ -44,6 +45,11 @@ class GroupDeleteView(LoginRequiredMixin, DeleteView):
 
 class GroupUpdateView(LoginRequiredMixin, UpdateView):
     model = ShareGroup
+    form_class = ShareGroupForm
     template_name = 'shares/groups/group_update.html'
-    fields = ['verbose_name', 'shares']
     success_url = reverse_lazy('shares:group-list')
+
+
+class GroupDetailView(LoginRequiredMixin, DetailView):
+    model = ShareGroup
+    template_name = 'shares/groups/group_form.html'

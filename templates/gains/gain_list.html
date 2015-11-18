@@ -1,0 +1,35 @@
+{% extends 'navbar.html' %}
+
+{% block headertext %}Shares{% endblock headertext %}
+{% block content %}
+    {% if object_list %}
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Share</th>
+                <th>{% include 'gains/gain_sort.html' with name='Close' sort_by='close_gain' %}</th>
+                <th>{% include 'gains/gain_sort.html' with name='Open' sort_by='open_gain' %}</th>
+                <th>{% include 'gains/gain_sort.html' with name='High' sort_by='high_gain' %}</th>
+                <th>{% include 'gains/gain_sort.html' with name='Low' sort_by='low_gain' %}</th>
+                <th>{% include 'gains/gain_sort.html' with name='Volume' sort_by='volume_gain' %}</th>
+                <th>Time span</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gain in object_list %}
+            <tr>
+                <td class="col-sm-3"><a href="{% url 'shares:share-detail' gain.share.pk %}">{{ gain.share }}</a></td>
+                <td class="col-sm-1">{% include 'gains/gain_format.html' with value=gain.close_gain %}</td>
+                <td class="col-sm-1">{% include 'gains/gain_format.html' with value=gain.open_gain %}</td>
+                <td class="col-sm-1">{% include 'gains/gain_format.html' with value=gain.high_gain %}</td>
+                <td class="col-sm-1">{% include 'gains/gain_format.html' with value=gain.low_gain %}</td>
+                <td class="col-sm-1">{% include 'gains/gain_format.html' with value=gain.volume_gain %}</td>
+                <td class="col-sm-4">{{ gain.lower_record.date }} - {{ gain.upper_record.date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <ul><li>No Gains yet.</li></ul>
+    {% endif %}
+{% endblock %}

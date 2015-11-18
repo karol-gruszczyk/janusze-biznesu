@@ -1,6 +1,6 @@
 from django.conf.urls import url, patterns
 
-from .views import (ShareListView, ShareUpdateView, ShareDetailView,
+from .views import (ShareListView, ShareUpdateView, ShareDetailView, GroupDetailView,
                     GroupCreateView, GroupListView, GroupDeleteView, GroupUpdateView)
 
 urlpatterns = patterns(
@@ -12,4 +12,5 @@ urlpatterns = patterns(
     url(r'^groups/create$', GroupCreateView.as_view(), name='group-create'),
     url(r'^groups/update/(?P<pk>[\w-]+)$', GroupUpdateView.as_view(), name='group-update'),
     url(r'^groups/delete/(?P<pk>[\w-]+)$', GroupDeleteView.as_view(), name='group-delete'),
+    url(r'^groups/detail/(?P<pk>[\w-]+)$', GroupDetailView.as_view(), name='group-detail'),
 )

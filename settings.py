@@ -23,10 +23,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'mathfilters',
     'rest_framework',
     'debug_toolbar',
     'djcelery',
     'apps.shares',
+    'apps.gains',
     'apps.stats',
     'apps.tasks',
 )
@@ -88,11 +90,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
-
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )

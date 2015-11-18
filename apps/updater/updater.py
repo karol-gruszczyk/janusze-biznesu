@@ -3,13 +3,18 @@ import shutil
 from threading import Thread
 from datetime import datetime
 from zipfile import ZipFile
+
 from django.conf import settings
 from django.template.defaultfilters import filesizeformat
+from django.db.models import Max
+
 import pytz
 import wget
 import requests
 from utils import Singleton
+
 from apps.shares.models import Share, ShareRecord, ShareGroup
+from apps.gains.models import Gain
 
 
 class Updater(metaclass=Singleton):
@@ -94,12 +99,20 @@ class Updater(metaclass=Singleton):
         cols = line.strip().split(',')  # assuming format is: Name,Date,Open,High,Low,Close,Volume
         name = cols[0]
         date = datetime.strptime(cols[1], '%Y%m%d')
-        try:
-            ShareRecord.objects.get(share__name=name, date=date)
-        except ShareRecord.DoesNotExist:
+        if not ShareRecord.objects.filter(share__name=name, date=date).exists():
             share, created = Share.objects.get_or_create(name=name)
-            ShareRecord.objects.create(share=share, date=date, open=cols[2], high=cols[3],
-                                       low=cols[4], close=cols[5], volume=cols[6])
+            max_date = ShareRecord.objects.filter(share=share).aggregate(Max('date'))['date__max']
+            lower_record = ShareRecord.objects.get(share=share, date=max_date)
+            upper_record = ShareRecord.objects.create(share=share, date=date, open=float(cols[2]), high=float(cols[3]),
+                                                      low=float(cols[4]), close=float(cols[5]), volume=float(cols[6]))
+            per_gain = lambda first, second: (second - first) / first if first else 0  # returning percentage gain
+            Gain.objects.create(share=share, date=upper_record.date,
+                                lower_record=lower_record, upper_record=upper_record,
+                                volume_gain=per_gain(lower_record.volume, upper_record.volume),
+                                open_gain=per_gain(lower_record.open, upper_record.open),
+                                close_gain=per_gain(lower_record.close, upper_record.close),
+                                high_gain=per_gain(lower_record.high, upper_record.high),
+                                low_gain=per_gain(lower_record.low, upper_record.low))
 
     def import_share(self, path_name, file_name, group_name):
         with open(os.path.join(path_name, file_name), 'r') as f:
@@ -112,6 +125,19 @@ class Updater(metaclass=Singleton):
         share.records = len(records)
         share.save()
         ShareRecord.objects.bulk_create(records)
+        gains = []
+        per_gain = lambda first, second: (second - first) / first if first else 0  # returning percentage gain
+        records = ShareRecord.objects.filter(share=share)
+        for lower_record, upper_record in zip(records[:len(records) - 1], records[1:]):
+            gain = Gain(share=share, date=upper_record.date,
+                        lower_record=lower_record, upper_record=upper_record,
+                        volume_gain=per_gain(lower_record.volume, upper_record.volume),
+                        open_gain=per_gain(lower_record.open, upper_record.open),
+                        close_gain=per_gain(lower_record.close, upper_record.close),
+                        high_gain=per_gain(lower_record.high, upper_record.high),
+                        low_gain=per_gain(lower_record.low, upper_record.low))
+            gains.append(gain)
+        Gain.objects.bulk_create(gains)
         group = ShareGroup.objects.update_or_create(name=group_name)[0]
         group.shares.add(share)
         self.increment_status(self.update_status['processing'])
@@ -120,6 +146,7 @@ class Updater(metaclass=Singleton):
         total = sum(len(os.listdir(i)) for i in dirs.values())
         self.init_status(self.update_status['processing'], 'Parsing files ...', total)
         ShareRecord.objects.all().delete()
+        Gain.objects.all().delete()
         for group, path_name in dirs.items():
             for file_name in os.listdir(path_name):
                 self.import_share(path_name, file_name, group)

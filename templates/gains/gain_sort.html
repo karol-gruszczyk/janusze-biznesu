@@ -1,0 +1,12 @@
+{% with "-"|add:sort_by as rev_sort_by %}
+<a href="?sort_by={% if sort_by = request.GET.sort_by %}-{% endif %}{{ sort_by }}">
+    {% if sort_by = request.GET.sort_by %}
+    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+    {% elif rev_sort_by = request.GET.sort_by %}
+    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    {% else %}
+    <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+    {% endif %}
+    {{ name }}
+</a>
+{% endwith %}

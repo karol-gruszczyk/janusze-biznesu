@@ -6,9 +6,10 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Records</th>
-                <th>Time span</th>
+                <th>{% include 'utils/sort_by.html' with name='Name' sort_by='name' %}</th>
+                <th>{% include 'utils/sort_by.html' with name='Record' sort_by='records' %}</th>
+                <th>{% include 'utils/sort_by.html' with name='First record' sort_by='first_record' %}</th>
+                <th>{% include 'utils/sort_by.html' with name='Last record' sort_by='last_record' %}</th>
                 <th>Update</th>
             </tr>
         </thead>
@@ -17,7 +18,8 @@
             <tr>
                 <td><a href="{% url 'shares:share-detail' share.pk %}">{{ share }}</a></td>
                 <td>{{ share.records }}</td>
-                <td>{{ share.first_record }} - {{ share.last_record }}</td>
+                <td>{{ share.first_record }}</td>
+                <td>{{ share.last_record }}</td>
                 <td><a href="{% url 'shares:share-update' share.pk %}" class="btn btn-block btn-info">Edit</a></td>
             </tr>
         {% endfor %}

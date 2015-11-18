@@ -6,9 +6,9 @@ from utils.views import SortableListView
 from .models import Gain
 
 
-class GainListView(SortableListView, LoginRequiredMixin):
+class GainListView(LoginRequiredMixin, SortableListView):
     model = Gain
-    sort_by = ['close_gain', 'open_gain', 'high_gain', 'low_gain', 'volume_gain']
+    sort_by = ['close_gain', 'open_gain', 'high_gain', 'low_gain', 'volume_gain', 'share__name']
     default_sort_by = '-close_gain'
 
     def get_queryset(self):

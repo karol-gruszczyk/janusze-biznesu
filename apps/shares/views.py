@@ -2,15 +2,19 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.core.urlresolvers import reverse_lazy
+
 from braces.views import LoginRequiredMixin
+
+from utils.views import SortableListView
 from .models import Share, ShareGroup
 from .forms import ShareGroupForm
 
 
-class ShareListView(LoginRequiredMixin, ListView):
+class ShareListView(LoginRequiredMixin, SortableListView):
     model = Share
     template_name = 'shares/share_list.html'
-    queryset = Share.objects.all().order_by('-last_record', '-records')
+    sort_by = ['name', 'records', 'first_record', 'last_record']
+    default_sort_by = '-last_record'
 
 
 class ShareUpdateView(LoginRequiredMixin, UpdateView):

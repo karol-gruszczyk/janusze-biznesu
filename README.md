@@ -7,7 +7,7 @@ A powerfull tool for predicting the stock exchange.
 * pip
 * virtualenv
 * Packages  
-`sudo apt-get install python3-dev lm-sensors python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose`
+`sudo apt-get install python3.5-dev lm-sensors build-essential gfortran libatlas-base-dev`
 
 ### Setup
 ```bash

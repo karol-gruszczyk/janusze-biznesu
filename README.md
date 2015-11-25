@@ -3,11 +3,11 @@
 A powerfull tool for predicting the stock exchange.
 
 ### Requirements
-* python 3
+* python 3.5
 * pip
 * virtualenv
-* python3-dev (python header files)
-* lm-sensors (temperature sensors package)
+* Packages  
+`sudo apt-get install python3-dev lm-sensors python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose`
 
 ### Setup
 ```bash

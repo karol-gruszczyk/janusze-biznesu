@@ -8,7 +8,6 @@ SECRET_KEY = '%jo4!lnn_m7dup445u+p7u5l8e_&y4k+#-mu34@i9+7dl*@bwp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
@@ -31,6 +30,7 @@ INSTALLED_APPS = (
     'apps.gains',
     'apps.stats',
     'apps.tasks',
+    'apps.neural_networks',
 )
 
 MIDDLEWARE_CLASSES = (

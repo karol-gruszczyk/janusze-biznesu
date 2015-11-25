@@ -1,25 +1,17 @@
 from django.db import models
 
 
-class DatabaseNeuralNetwork(models.Model):
-    input_neurons = models.ForeignKey(DatabaseNeuron)
-    output_neurons = models.ForeignKey(DatabaseNeuron)
-
-
 class DatabaseNeuron(models.Model):
-    neural_network = models.ForeignKey(DatabaseNeuralNetwork)
-
-    @property
-    def backward_connections(self):
-        return DatabaseNeuralConnection.objects.filter(next_neuron=self)
-
-    @property
-    def forward_connections(self):
-        return DatabaseNeuralConnection.objects.filter(previous_neuron=self)
+    pass
 
 
 class DatabaseNeuralConnection(models.Model):
-    neural_network = models.ForeignKey(DatabaseNeuralNetwork)
-    previous_neuron = models.ForeignKey(DatabaseNeuron)
-    next_neuron = models.ForeignKey(DatabaseNeuron)
+    previous_neuron = models.ForeignKey(DatabaseNeuron, related_name='forward_connections')
+    next_neuron = models.ForeignKey(DatabaseNeuron, related_name='backward_connections')
     weight = models.FloatField()
+
+
+class DatabaseNeuralNetwork(models.Model):
+    input_neurons = models.ForeignKey(DatabaseNeuron, related_name='+')
+    output_neurons = models.ForeignKey(DatabaseNeuron, related_name='+')
+

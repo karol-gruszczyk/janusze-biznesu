@@ -1,6 +1,7 @@
-django
+django==1.8.1
 django-braces
 django-widget-tweaks
+django-mathfilters
 djangorestframework
 django-debug-toolbar
 django-celery
@@ -8,3 +9,5 @@ requests
 psutil
 wget
 pytz
+six
+sqlparse

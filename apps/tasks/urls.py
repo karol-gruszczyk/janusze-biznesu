@@ -1,11 +1,10 @@
 from django.conf.urls import patterns, url
-from .views import TaskListView, TaskCreateView, TaskDeleteView, TaskDetailView, TaskUpdateView
+from .views import TaskTaskStatusListView, TaskStatusDeleteView
+
 
 urlpatterns = patterns(
     '',
-    url(r'^list/$', TaskListView.as_view(), name='task-list'),
-    url(r'^create/$', TaskCreateView.as_view(), name='task-create'),
-    url(r'^detail/(?P<pk>[\w-]+)$', TaskDetailView.as_view(), name='task-detail'),
-    url(r'^update/(?P<pk>[\w-]+)$', TaskUpdateView.as_view(), name='task-update'),
-    url(r'^delete/(?P<pk>[\w-]+)$', TaskDeleteView.as_view(), name='task-delete'),
+    url(r'^list/$', TaskTaskStatusListView.as_view(), name='task-list'),
+    # url(r'^create-correlation-task/$', CorrelationTaskCreateView.as_view(), name='correlation-task-create'),
+    url(r'^delete/(?P<pk>[\w-]+)$', TaskStatusDeleteView.as_view(), name='task-delete'),
 )

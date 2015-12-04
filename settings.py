@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'apps.gains',
     'apps.stats',
     'apps.tasks',
+    'apps.correlations',
     'apps.neural_networks',
 )
 

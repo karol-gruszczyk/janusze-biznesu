@@ -43,7 +43,7 @@ class Neuron:
     def __init__(self, neuron_id):
         self.neuron_id = neuron_id
 
-    def __cmp__(self, other: Neuron):
+    def __cmp__(self, other):
         return self.neuron_id == other.neuron_id
 
 

@@ -23,7 +23,7 @@ class Share(models.Model):
     last_updated = models.DateTimeField(null=True)
     first_record = models.DateField(null=True)
     last_record = models.DateField(null=True)
-    records = models.PositiveIntegerField(null=True)
+    num_records = models.PositiveIntegerField(null=True)
 
     objects = ShareManager()
 
@@ -34,8 +34,12 @@ class Share(models.Model):
         return self.verbose_name if self.verbose_name else self.name
 
 
+class ShareSet(models.Model):
+    shares = models.ManyToManyField(Share)
+
+
 class ShareRecord(models.Model):
-    share = models.ForeignKey(Share, null=False, db_index=True)
+    share = models.ForeignKey(Share, null=False, db_index=True, related_name='records')
     date = models.DateField(null=False, db_index=True)
     open = models.FloatField(null=False)
     close = models.FloatField(null=False)

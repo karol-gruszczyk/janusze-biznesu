@@ -2,7 +2,6 @@
 
 {% block headertext %}Tasks{% endblock headertext %}
 {% block content %}
-    <a href="{% url 'tasks:task-create' %}" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>Create task</a>
     {% if object_list %}
     <table class="table table-bordered">
         <thead>

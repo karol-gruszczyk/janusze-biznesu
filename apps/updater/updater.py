@@ -127,8 +127,8 @@ class Updater(metaclass=Singleton):
         ShareRecord.objects.bulk_create(records)
         gains = []
         per_gain = lambda first, second: (second - first) / first if first else 0  # returning percentage gain
-        records = ShareRecord.objects.filter(share=share)
-        for lower_record, upper_record in zip(records[:len(records) - 1], records[1:]):
+        records = list(share.records.all())
+        for lower_record, upper_record in zip(records[:-1], records[1:]):
             gain = Gain(share=share, date=upper_record.date,
                         lower_record=lower_record, upper_record=upper_record,
                         volume_gain=per_gain(lower_record.volume, upper_record.volume),

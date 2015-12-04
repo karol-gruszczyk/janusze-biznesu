@@ -11,3 +11,7 @@ wget
 pytz
 six
 sqlparse
+numpy
+scipy
+pytest-django
+nose

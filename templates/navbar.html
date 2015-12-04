@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block navbar %}
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                <span class="glyphicon glyphicon-usd"></span>
-                    Janusze Biznesu
-                <span class="glyphicon glyphicon-usd"></span>
+                Grustein & Hurnberg
             </a>
         </div>
 
@@ -27,8 +26,18 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         Tasks<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Status</a></li>
-                        <li><a href="#">Create task</a></li>
+                        <li><a href="{% url 'tasks:task-list' %}">Status</a></li>
+                        <li><a href="{# url 'tasks:correlation-task-create' #}">Create correlation</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Correlations<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'correlations:correlation-list' %}">List</a></li>
+                        <li><a href="{% url 'correlations:correlation-set-create' %}">Create correlation set</a></li>
+                        <li><a href="{% url 'correlations:correlation-set-list' %}">Correlation set list</a></li>
                     </ul>
                 </li>
 

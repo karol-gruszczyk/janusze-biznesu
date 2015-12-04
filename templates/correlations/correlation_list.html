@@ -1,0 +1,32 @@
+{% extends 'navbar.html' %}
+
+{% block headertext %}Correlations sets{% endblock headertext %}
+{% block content %}
+    {% if object_list %}
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>{% include 'utils/sort_by.html' with name='Name' sort_by='name' %}</th>
+                <th>{% include 'utils/sort_by.html' with name='Record' sort_by='records' %}</th>
+                <th>{% include 'utils/sort_by.html' with name='First record' sort_by='first_record' %}</th>
+                <th>{% include 'utils/sort_by.html' with name='Last record' sort_by='last_record' %}</th>
+                <th>Input shares</th>
+                <th>{% include 'utils/sort_by.html' with name='Output share' sort_by='last_record' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for share in object_list %}
+            <tr>
+                <td><a href="{% url 'shares:share-detail' share.pk %}">{{ share }}</a></td>
+                <td>{{ share.records }}</td>
+                <td>{{ share.first_record }}</td>
+                <td>{{ share.last_record }}</td>
+                <td><a href="{% url 'shares:share-update' share.pk %}" class="btn btn-block btn-info">Edit</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <ul><li>No Correlations sets yet.</li></ul>
+    {% endif %}
+{% endblock %}
